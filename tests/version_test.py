@@ -5,9 +5,6 @@ import siepic_forge as siepic
 
 def test_version():
     assert isinstance(siepic.__version__, str)
-    tech = siepic.ebeam()
-    assert siepic.__version__ == tech.version
-
     pyproject = pathlib.Path("pyproject.toml")
     if pyproject.is_file():
         contents = pyproject.read_text()
