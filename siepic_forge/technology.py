@@ -1,6 +1,5 @@
 import tidy3d as td
 import photonforge as pf
-import math
 
 
 _Medium = td.components.medium.MediumType
