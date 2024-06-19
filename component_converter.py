@@ -14,13 +14,15 @@ for path in pathlib.Path("siepic_forge/library").iterdir():
             comp = components[comp_name]
             if comp.name[0] == "$":
                 continue
-            pins = []
-            for s in comp.structures:
-                if s.layer == (1, 99):
-                    s.layer = (1, 0)
-                elif s.layer == (1, 10):
-                    center = numpy.round((s.x_mid, s.y_mid), decimals=3)
-                    pins.append(center)
+            comp.remap_layers({(1, 99): (1, 0)})
+            fibers = [
+                numpy.round((s.x_mid, s.y_mid), decimals=3)
+                for s in comp.structures.get((81, 0), [])
+            ]
+            pins = [
+                numpy.round((s.x_mid, s.y_mid), decimals=3)
+                for s in comp.structures.get((1, 10), [])
+            ]
             ports = []
             for pin in pins:
                 candidates = []
@@ -31,17 +33,11 @@ for path in pathlib.Path("siepic_forge/library").iterdir():
                 if len(candidates) == 0:
                     print(f"# WARN: Missing port {tuple(pin)}.")
                 ports.extend(candidates)
-
-            sym = {
-                2: "_symmetries_2port",
-                3: "_symmetries_3port",
-                4: "_symmetries_directional_coupler",
-            }.get(len(ports), "[]")
-            model = (
-                "None" if len(ports) < 2 else '(pf.Tidy3DModel, {"port_symmetries": ' + sym + "})"
-            )
+            ports.extend((tuple(c),) for c in fibers)
 
             ports = ", ".join(repr(p) for p in ports)
+
+            model = "None" if len(ports) < 2 else "(pf.Tidy3DModel, {})"
 
             print(
                 f"""{comp.name!r}: (

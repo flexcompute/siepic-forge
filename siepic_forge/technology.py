@@ -14,10 +14,13 @@ def ebeam(
     si_mask_dilation: float = 0.0,
     si_slab_mask_dilation: float = 0.0,
     sin_mask_dilation: float = 0.0,
-    sidewall_angle: float = 8.0,
-    sio2: _Medium = td.material_library["SiO2"]["Horiba"],
+    sidewall_angle: float = 0.0,
+    top_oxide_thickness: float = -1.0,
+    bottom_oxide_thickness: float = -1.0,
+    sio2: _Medium = td.material_library["SiO2"]["Palik_Lossless"],
     si: _Medium = td.material_library["cSi"]["Li1993_293K"],
-    sin: _Medium = td.material_library["SiN"]["Horiba"],
+    sin: _Medium = td.material_library["Si3N4"]["Luke2015PMLStable"],
+    opening: _Medium = td.Medium(permittivity=1.0),
 ) -> pf.Technology:
     """Create a technology for the e-beam PDK.
 
@@ -36,9 +39,15 @@ def ebeam(
         sin_mask_dilation (float): Mask dilation for the SiN layer.
         sidewall_angle (float): Sidewall angle (in degrees) for Si and SiN
           etching.
+        top_oxide_thickness (float): If non-negative, an open region is
+          added above the top oxide (thickness measured from the substrate).
+          Otherwise, an infinite oxide region is used.
+        bottom_oxide_thickness (float): If non-negative, a silicon substrate
+          region is added below the bottom oxide.
         sio2 (Medium): Background medium.
         si (Medium): Silicon medium.
         sin (Medium): Silicon nitride medium.
+        opening (Medium): Medium for openings.
 
     Returns:
         Technology: E-Beam PDK technology definition.
@@ -92,7 +101,18 @@ def ebeam(
             (0, sin_thickness),
             sidewall_angle,
         ),
+        pf.ExtrusionSpec(pf.MaskSpec((201, 0), (210, 0), "+"), opening, (-pf.Z_INF, pf.Z_INF)),
     ]
+
+    if top_oxide_thickness >= 0:
+        extrusion_specs.insert(
+            0, pf.ExtrusionSpec(pf.MaskSpec(), opening, (top_oxide_thickness, pf.Z_INF))
+        )
+
+    if bottom_oxide_thickness >= 0:
+        extrusion_specs.insert(
+            0, pf.ExtrusionSpec(pf.MaskSpec(), si, (-pf.Z_INF, -bottom_oxide_thickness))
+        )
 
     ports = {
         "TE_1550_500": pf.PortSpec(
