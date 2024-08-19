@@ -15,8 +15,10 @@ def ebeam(
     si_slab_mask_dilation: float = 0.0,
     sin_mask_dilation: float = 0.0,
     sidewall_angle: float = 0.0,
-    top_oxide_thickness: float = -1.0,
-    bottom_oxide_thickness: float = -1.0,
+    top_oxide_thickness: float = 2.0,
+    bottom_oxide_thickness: float = 3.017,
+    include_top_opening: bool = False,
+    include_substrate: bool = False,
     sio2: _Medium = td.material_library["SiO2"]["Palik_Lossless"],
     si: _Medium = td.material_library["cSi"]["Li1993_293K"],
     sin: _Medium = td.material_library["Si3N4"]["Luke2015PMLStable"],
@@ -39,11 +41,13 @@ def ebeam(
         sin_mask_dilation (float): Mask dilation for the SiN layer.
         sidewall_angle (float): Sidewall angle (in degrees) for Si and SiN
           etching.
-        top_oxide_thickness (float): If non-negative, an open region is
-          added above the top oxide (thickness measured from the substrate).
-          Otherwise, an infinite oxide region is used.
-        bottom_oxide_thickness (float): If non-negative, a silicon substrate
-          region is added below the bottom oxide.
+        top_oxide_thickness (float): Thickness of the top oxide clad,
+          measured from the substrate.
+        bottom_oxide_thickness (float): Thickness of the bottom oxide clad.
+        include_top_opening (bool): Flag indicating wether or not to include
+          the region above the top oxide.
+        include_substrate (bool): Flag indicating wether or not to include
+          the silicon substrate.
         sio2 (Medium): Background medium.
         si (Medium): Silicon medium.
         sin (Medium): Silicon nitride medium.
@@ -57,8 +61,8 @@ def ebeam(
         "Waveguide": pf.LayerSpec((1, 99), "Waveguides", "#ff80a818", "\\"),
         "Si": pf.LayerSpec((1, 0), "Waveguides", "#ff80a818", "\\\\"),
         "SiN": pf.LayerSpec((1, 5), "Waveguides", "#a6cee318", "\\\\"),
-        "Si slab": pf.LayerSpec((2, 0), "Waveguides", "#80a8ff18", "/"),
-        "Si Litho193nm": pf.LayerSpec((1, 69), "Waveguides", "#cc80a818", "\\"),
+        "Si - 90 nm rib": pf.LayerSpec((2, 0), "Waveguides", "#80a8ff18", "/"),
+        "Si_Litho193nm": pf.LayerSpec((1, 69), "Waveguides", "#cc80a818", "\\"),
         "Oxide open (to BOX)": pf.LayerSpec((6, 0), "Waveguides", "#ffae0018", "\\"),
         "Text": pf.LayerSpec((10, 0), "", "#0000ff18", "\\"),
         "Si N": pf.LayerSpec((20, 0), "Doping", "#7000FF18", "\\\\"),
@@ -104,12 +108,12 @@ def ebeam(
         pf.ExtrusionSpec(pf.MaskSpec((201, 0), (210, 0), "+"), opening, (-pf.Z_INF, pf.Z_INF)),
     ]
 
-    if top_oxide_thickness >= 0:
+    if include_top_opening:
         extrusion_specs.insert(
             0, pf.ExtrusionSpec(pf.MaskSpec(), opening, (top_oxide_thickness, pf.Z_INF))
         )
 
-    if bottom_oxide_thickness >= 0:
+    if include_substrate:
         extrusion_specs.insert(
             0, pf.ExtrusionSpec(pf.MaskSpec(), si, (-pf.Z_INF, -bottom_oxide_thickness))
         )
@@ -279,8 +283,9 @@ def ebeam(
         ),
     }
 
-    result = pf.Technology("SiEPIC EBeam", "0.4.5", layers, extrusion_specs, ports, sio2)
+    result = pf.Technology("SiEPIC EBeam", "0.4.11", layers, extrusion_specs, ports, sio2)
     result.random_variables = [
-        pf.monte_carlo.RandomVariable("si_thickness", value=0.22, stdev=0.0223 / 6)
+        pf.monte_carlo.RandomVariable("si_thickness", value=0.22, stdev=0.0223 / 6),
+        pf.monte_carlo.RandomVariable("bottom_oxide_thickness", value=3.017, stdev=0.006 / 6),
     ]
     return result

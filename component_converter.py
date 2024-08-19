@@ -37,7 +37,7 @@ for path in pathlib.Path("siepic_forge/library").iterdir():
 
             ports = ", ".join(repr(p) for p in ports)
 
-            model = "None" if len(ports) < 2 else "(pf.Tidy3DModel, {})"
+            model = "None" if len(ports) < 2 or comp.name.endswith("BB") else "{}"
 
             print(
                 f"""{comp.name!r}: (
