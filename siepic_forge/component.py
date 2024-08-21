@@ -349,7 +349,7 @@ _component_data = {
     ),
 }
 
-component_names = tuple(_component_data.keys())
+component_names = set(_component_data.keys())
 
 
 def component(
@@ -360,8 +360,8 @@ def component(
     Args:
         cell_name (str): Name of the component to load.
         technology (Technology): Technology for the created component.
-        tidy3d_model_kwargs: Keyword arguments passed to the default model
-          of the created component.
+        tidy3d_model_kwargs (dict): Keyword arguments passed to the Tidy3D
+          model of the created component.
 
     Returns:
         Component: Component loaded from the default PDK library.

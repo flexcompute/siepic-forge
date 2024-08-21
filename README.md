@@ -1,40 +1,66 @@
 # SiEPIC Forge
 
-This is a technology module for PhotonForge to support [SiEPIC EBeam
-PDK](https://github.com/SiEPIC/SiEPIC_EBeam_PDK).
+This python module implements the [SiEPIC EBeam
+PDK](https://github.com/SiEPIC/SiEPIC_EBeam_PDK) PDK as components and
+technology specification for
+[PhotonForge](https://docs.flexcompute.com/projects/photonforge/)
 
-Please note that the 3D structures obtained by extrusion through this
-technology are a best approximation of the intended fabricated structures, but
-the actuall final dimensions may differ due to several fabrication-specific
-effects.
+
+## Installation
+
+### Python interface
+
+Installation via `pip`:
+
+    pip install siepic-forge
+
+### PhotonForge Web UI
+
+In the Tidy3D web interface, go to your [*Account
+Center*](https://tidy3d.simulation.cloud/account) and upload the token file
+(.tok) under *PhotonForge Libraries* to enable this module.
 
 
 ## Usage
 
-The module defines the following functions and attributes:
+The simplest way to use the this PDK in PhotonForge is to set its technology as
+default:
 
-- Function `ebeam`: generate a `Technology` object supporting SiEPIC EBeam PDK.
-- Function `component`: generate pre-defined components from the SiEPIC component library.
-- Tuple `component_names`: contains the names of all available components in the library.
+    import photonforge as pf
+    import siepic_forge as siepic
 
-Example:
+    tech = siepic.ebeam()
+    pf.config.default_technology = tech
 
-```python
-import numpy as np
-from matplotlib import pyplot
-import photonforge as pf
-import siepic_forge as siepic
 
-# Set default technology using default parameters
-pf.config.default_technology = siepic.ebeam()
+The `ebeam` function creates a parametric technology and accepts a number of
+parameters to fine-tune the technology.
 
-# Get a component from the library
-component = siepic.component("ebeam_y_1550")
+PDK components are available through the `component` function, which takes a
+component name as first argument. The list of component names is available as a
+set `component_names`:
 
-# Simulate and plot the component's S matrix
-pf.plot_s_matrix(pf.C_0 / np.linspace(1.45, 1.62, 171), component=component)
-pyplot.show()
-```
+    print(siepic.component_names)
+    
+    pdk_component = siepic.component("ebeam_y_1550")
+
+
+More information can be obtained in the documentation for each function:
+
+    help(siepic.ebeam)
+
+    help(siepic.component)
+
+
+## Warnings
+
+Please note that the 3D structures obtained by extrusion through this module's
+technologies are a best approximation of the intended fabricated structures,
+but the actual final dimensions may differ due to several fabrication-specific
+effects. In particular, doping profiles are represented with hard-boundary,
+homogeneous solids, but, in practice will present process-dependent variations
+with smooth boundaries.
+
 
 ## Third-Party Licenses
 
