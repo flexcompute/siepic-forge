@@ -76,15 +76,21 @@ patterns = {
     "46": "+",  # grid sparse, thick
 }
 
+
 def parse(node, group=""):
     name = node.find("name").text
+    if name == "Si - 90 nm rib":
+        name = "Si slab"
+    elif name == "Lumerical":
+        name = "FDTD"
     layer = node.find("source").text
     i = layer.find("/")
     j = i + layer[i:].find("@")
     layer = (int(layer[:i]), int(layer[i + 1 : j]))
     color = node.find("fill-color").text + "18"
     pattern = patterns[node.find("dither-pattern").text[1:]]
-    print(f'{name!r}: pf.LayerSpec({layer}, {group!r}, {color!r}, {pattern!r}),')
+    print(f"{name!r}: pf.LayerSpec({layer}, {group!r}, {color!r}, {pattern!r}),")
+
 
 tree = et.parse(f"{pdk}/EBeam.lyp")
 root = tree.getroot()

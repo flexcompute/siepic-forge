@@ -61,7 +61,7 @@ def ebeam(
         "Waveguide": pf.LayerSpec((1, 99), "Waveguides", "#ff80a818", "\\"),
         "Si": pf.LayerSpec((1, 0), "Waveguides", "#ff80a818", "\\\\"),
         "SiN": pf.LayerSpec((1, 5), "Waveguides", "#a6cee318", "\\\\"),
-        "Si - 90 nm rib": pf.LayerSpec((2, 0), "Waveguides", "#80a8ff18", "/"),
+        "Si slab": pf.LayerSpec((2, 0), "Waveguides", "#80a8ff18", "/"),
         "Si_Litho193nm": pf.LayerSpec((1, 69), "Waveguides", "#cc80a818", "\\"),
         "Oxide open (to BOX)": pf.LayerSpec((6, 0), "Waveguides", "#ffae0018", "\\"),
         "Text": pf.LayerSpec((10, 0), "", "#0000ff18", "\\"),
