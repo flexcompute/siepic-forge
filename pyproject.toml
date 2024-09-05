@@ -4,10 +4,10 @@ version = "0.9.0"
 authors = [{name = "Flexcompute Inc.", email = "info@flexcompute.com"}]
 description = ""
 readme = "README.md"
-dependencies = ["photonforge >= 0.9.0"]
+dependencies = ["photonforge ~= 1.0.0rc1"]
 
 [project.optional-dependencies]
-dev = ["pytest >= 7.2", "ipykernel >= 6.10", "ipywidgets >= 8.0"]
+test = ["pytest >= 7.2"]
 
 [tool.setuptools]
 packages = ["siepic_forge"]

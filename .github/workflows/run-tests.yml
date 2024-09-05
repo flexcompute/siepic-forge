@@ -1,0 +1,29 @@
+name: Tests Runner
+
+on: [push, pull_request]
+
+jobs:
+  linux-macos-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        python-version: ['3.9', '3.12']
+    name: Test for ${{ matrix.python-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade setuptools wheel pip-tools
+          python -m piptools compile --resolver=backtracking --extra=test -o requirements.txt pyproject.toml
+          pip install -r requirements.txt
+      - name: Build and install
+        run: pip install .
+      - name: Test
+        run: pytest

@@ -1,0 +1,39 @@
+name: Package Builder
+
+on:
+  push:
+    tags:
+      - 'v*.*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build wheels on manylinux2014
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+      - name: Install pypa/build
+        run: python3 -m pip install build --user
+      - name: Build a binary wheel and a source tarball
+        run: python3 -m build
+      - uses: actions/upload-artifact@v4
+        with:
+          path: ./dist/*
+          name: artifact
+
+  upload_pypi:
+    name: Upload wheel to PyPI
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - uses: pypa/gh-action-pypi-publish@v1.10.1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          skip-existing: true
+          verbose: true
