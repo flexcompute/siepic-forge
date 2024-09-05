@@ -2,12 +2,16 @@
 name = "siepic-forge"
 version = "1.0.0"
 authors = [{name = "Flexcompute Inc.", email = "info@flexcompute.com"}]
-description = ""
+description = "SiEPIC PDK implementation for PhotonForge"
 readme = "README.md"
 dependencies = ["photonforge ~= 1.0.0rc1"]
 
 [project.optional-dependencies]
 test = ["pytest >= 7.2"]
+
+[project.urls]
+homepage = "https://github.com/flexcompute/siepic-forge"
+documentation = "https://github.com/flexcompute/siepic-forge"
 
 [tool.setuptools]
 packages = ["siepic_forge"]
