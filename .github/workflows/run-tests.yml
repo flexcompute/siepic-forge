@@ -26,4 +26,6 @@ jobs:
       - name: Build and install
         run: pip install .
       - name: Test
-        run: pytest
+        run: |
+          export SIMCLOUD_APIKEY=${{ secrets.SIMCLOUD_APIKEY }}
+          pytest
