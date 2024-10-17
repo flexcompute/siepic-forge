@@ -33,7 +33,7 @@ def ebeam(
         si_thickness (float): Full silicon layer thickness.
         si_slab_thickness (float): Partially etched slab thickness in
           silicon.
-        sin_thickness (float): SiN layer thinckness.
+        sin_thickness (float): SiN layer thickness.
         si_mask_dilation (float): Mask dilation for the full-thickness Si
           layer.
         si_slab_mask_dilation (float): Mask dilation for the partially
@@ -44,9 +44,9 @@ def ebeam(
         top_oxide_thickness (float): Thickness of the top oxide clad,
           measured from the substrate.
         bottom_oxide_thickness (float): Thickness of the bottom oxide clad.
-        include_top_opening (bool): Flag indicating wether or not to include
-          the region above the top oxide.
-        include_substrate (bool): Flag indicating wether or not to include
+        include_top_opening (bool): Flag indicating whether or not to
+          include the region above the top oxide.
+        include_substrate (bool): Flag indicating whether or not to include
           the silicon substrate.
         sio2 (Medium): Background medium.
         si (Medium): Silicon medium.
