@@ -26,14 +26,14 @@ jobs:
     name: Upload wheel to PyPI
     needs: [build]
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
       - uses: actions/download-artifact@v4
         with:
           path: dist
           merge-multiple: true
-      - uses: pypa/gh-action-pypi-publish@v1.10.1
+      - uses: pypa/gh-action-pypi-publish@v1.10.3
         with:
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
           skip-existing: true
           verbose: true
