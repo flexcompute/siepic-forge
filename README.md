@@ -17,9 +17,10 @@ Installation via `pip`:
 
 ### PhotonForge Web UI
 
-In the Tidy3D web interface, go to your [*Account
-Center*](https://tidy3d.simulation.cloud/account) and upload the token file
-(.tok) under *PhotonForge Libraries* to enable this module.
+1. [Download from PyPI](https://pypi.org/project/siepic-forge/#files) the
+   latest wheel file: `imec_isipp200_ip_forge-*-py3-none-any.whl`.
+
+2. In the PhotonForge web interface, upload that file to load the EBeam PDK.
 
 
 ## Usage

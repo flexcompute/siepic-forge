@@ -4,7 +4,7 @@ version = "1.0.0"
 authors = [{name = "Flexcompute Inc.", email = "info@flexcompute.com"}]
 description = "SiEPIC PDK implementation for PhotonForge"
 readme = "README.md"
-dependencies = ["photonforge ~= 1.0.0rc1"]
+dependencies = ["photonforge >= 1.0.0"]
 
 [project.optional-dependencies]
 test = ["pytest >= 7.2"]
