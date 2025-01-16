@@ -19,6 +19,11 @@ _symmetries_crossing = [
     ("P0", "P3", {"P1": "P2", "P2": "P0", "P3": "P1"}),
 ]
 
+_symmetries_crossing2 = [
+    ("P0", "P1", {"P1": "P0", "P2": "P3", "P3": "P2"}),
+    ("P2", "P3", {"P0": "P1", "P1": "P0", "P3": "P2"}),
+]
+
 _symmetries_directional_coupler = [
     ("P0", "P1", {"P1": "P0", "P2": "P3", "P3": "P2"}),
     ("P0", "P2", {"P1": "P3", "P2": "P0", "P3": "P1"}),
@@ -43,7 +48,7 @@ _angle = -21 * math.pi / 180
 _te1550_vx = math.sin(_angle)
 _te1550_vy = -math.cos(_angle)
 
-_angle = -7 * math.pi / 180
+_angle = 7.5 * math.pi / 180
 _te895_vx = math.sin(_angle)
 _te895_vy = -math.cos(_angle)
 
@@ -55,6 +60,15 @@ _component_data = {
             ((-12.88, 0.0), 0, "SiN_TE_1550_750"),
             ((12.88, -0.975), 180, "SiN_TE_1550_750"),
             ((12.88, 0.975), 180, "SiN_TE_1550_750"),
+        ],
+        None,
+    ),
+    "GC_SiN_TE_1310_8degOxide_BB": (
+        "EBeam_SiN",
+        "GC_SiN_TE_1310_8degOxide_BB",
+        [
+            ((0.0, 0.0), 180, "SiN_TE_1310_750"),
+            ((-29.7, 0.0), (_vx8, 0, _vy8), _waist, 90),
         ],
         None,
     ),
@@ -78,16 +92,37 @@ _component_data = {
         ],
         {"port_symmetries": _symmetries_mmi22},
     ),
-    # NOTE: no TE port at 1310 nm with 800 nm
     "ebeam_YBranch_te1310": (
         "EBeam_SiN",
         "ULaval",
         [
-            ((-7.69, 0.0), 0, "SiN_TE_1550_800"),
-            ((7.69, 0.7), 180, "SiN_TE_1550_800"),
-            ((7.69, -0.7), 180, "SiN_TE_1550_800"),
+            ((-7.69, 0.0), 0, "SiN_TE_1310_800"),
+            ((15.5, -1.0), 180, "SiN_TE_1310_800"),
+            ((15.5, 1.0), 180, "SiN_TE_1310_800"),
         ],
         {"port_symmetries": _symmetries_3port},
+    ),
+    "crossing_horizontal": (
+        "EBeam_SiN",
+        "crossing_horizontal",
+        [
+            ((-37.83, -17.12), 0, "SiN_TE_1550_750"),
+            ((-37.83, 17.12), 0, "SiN_TE_1550_750"),
+            ((37.83, -17.12), 180, "SiN_TE_1550_750"),
+            ((37.83, 17.12), 180, "SiN_TE_1550_750"),
+        ],
+        {"port_symmetries": _symmetries_directional_coupler},
+    ),
+    "crossing_manhattan": (
+        "EBeam_SiN",
+        "crossing_manhattan",
+        [
+            ((-3.5, 0.0), 0, "SiN_TE_1550_750"),
+            ((3.5, 0.0), 180, "SiN_TE_1550_750"),
+            ((0.0, -3.5), 90, "SiN_TE_1550_750"),
+            ((0.0, 3.5), 270, "SiN_TE_1550_750"),
+        ],
+        {"port_symmetries": _symmetries_crossing2},
     ),
     "ebeam_BondPad": (
         "EBeam_SiN",
@@ -117,14 +152,12 @@ _component_data = {
         ],
         {"port_symmetries": _symmetries_directional_coupler},
     ),
-    # WARN: Missing port (-6.0, 0.0).
-    # WARN: Missing port (6.0, 0.0).
-    # "ebeam_Polarizer_TM_1550_UQAM": (
-    #     "EBeam_SiN",
-    #     "ebeam_Polarizer_TM_1550_UQAM",
-    #     [],
-    #     None,
-    # ),
+    "ebeam_Polarizer_TM_1550_UQAM": (
+        "EBeam_SiN",
+        "ebeam_Polarizer_TM_1550_UQAM",
+        [((-6.0, 0.0), 0, "SiN_TE_1550_1000"), ((6.0, 0.0), 180, "SiN_TE_1550_1000")],
+        {},
+    ),
     "ebeam_YBranch_895": (
         "EBeam_SiN",
         "ebeam_YBranch_895",
@@ -139,8 +172,8 @@ _component_data = {
         "EBeam_SiN",
         "ebeam_gc_te895",
         [
-            ((-24.2, 0.0), 0, "SiN_TE_895_450"),
-            ((8, 0), (_te895_vx, 0, _te895_vy), _waist, 90),
+            ((0.0, 0.0), 180, 'SiN_TE_895_450'),
+            ((-29.0, 0), (_te895_vx, 0, _te895_vy), _waist, 90),
         ],
         {"symmetry": (0, -1, 0), "bounds": ((None, -10, None), (25, 10, None))},
     ),
@@ -183,12 +216,11 @@ _component_data = {
         ],
         None,
     ),
-    # NOTE: no TM port with width 350 nm
     "GC_TM_1310_8degOxide_BB": (
         "EBeam",
         "GCs_BB",
         [
-            ((0.0, 0.0), 180, "TE_1310_350"),
+            ((0.0, 0.0), 180, "TM_1310_350"),
             ((-20.4, 0.0), (_vx8, 0, _vy8), _waist, 0),
         ],
         None,
@@ -264,6 +296,24 @@ _component_data = {
         ],
         {"symmetry": (0, 1, 0), "bounds": ((None, -11, None), (None, 11, None))},
     ),
+    "ebeam_routing_taper_te1550_w=500nm_to_w=3000nm_L=20um": (
+        "EBeam",
+        "ebeam_routing_taper_te1550_w=500nm_to_w=3000nm_L=20um",
+        [
+            ((0.0, 0.0), 0, "TE_1550_500"),
+            ((20.0, 0.0), 180, "MM_TE_1550_3000"),
+        ],
+        {},
+    ),
+    "ebeam_routing_taper_te1550_w=500nm_to_w=3000nm_L=40um": (
+        "EBeam",
+        "ebeam_routing_taper_te1550_w=500nm_to_w=3000nm_L=40um",
+        [
+            ((0.0, 0.0), 0, "TE_1550_500"),
+            ((40.0, 0.0), 180, "MM_TE_1550_3000"),
+        ],
+        {},
+    ),
     "ebeam_splitter_swg_assist_te1310": (
         "EBeam",
         "ebeam_splitter_swg_assist_te1310",
@@ -337,7 +387,6 @@ _component_data = {
     "taper_si_simm_1310": (
         "EBeam",
         "taper_si_simm_1310",
-        # NOTE: no MM TM port at 1310 nm
         [((50.0, 0.0), 180, "MM_TE_1550_3000"), ((0.0, 0.0), 0, "TE_1310_350")],
         {},
     ),

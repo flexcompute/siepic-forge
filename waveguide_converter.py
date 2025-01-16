@@ -7,7 +7,8 @@ pdk = "/home/lucas/Flexcompute/pdk/SiEPIC_EBeam_PDK/klayout/EBeam"
 layers = {
     "Waveguide": ((1, 99), "Waveguides", "#ff80a818", "\\"),
     "Si": ((1, 0), "Waveguides", "#ff80a818", "\\\\"),
-    "SiN": ((1, 5), "Waveguides", "#a6cee318", "\\\\"),
+    "SiN": ((4, 0), "Waveguides", "#a6cee318", "\\\\"),
+    "Si slab": ((2, 0), "Waveguides", "#80a8ff18", "/"),
     "Si - 90 nm rib": ((2, 0), "Waveguides", "#80a8ff18", "/"),
     "Si_Litho193nm": ((1, 69), "Waveguides", "#cc80a818", "\\"),
     "Oxide open (to BOX)": ((6, 0), "Waveguides", "#ffae0018", "\\"),
@@ -20,6 +21,7 @@ layers = {
     "VC": ((40, 0), "Metal", "#3a027f18", "xx"),
     "FloorPlan": ((99, 0), "Misc", "#8000ff18", "hollow"),
     "Deep Trench": ((201, 0), "Misc", "#c0c0c018", "solid"),
+    "Isolation Trench": ((203, 0), "Misc", "#c0c0c018", "solid"),
     "Dicing": ((210, 0), "Misc", "#a0a0c018", "solid"),
     "Chip design area": ((290, 0), "Misc", "#80005718", "hollow"),
     "Keep out": ((202, 0), "Misc", "#a0a0c018", "//"),
@@ -29,7 +31,7 @@ layers = {
     "PinRecM": ((1, 11), "SiEPIC", "#00408018", "/"),
     "FbrTgt": ((81, 0), "SiEPIC", "#00408018", "/"),
     "Errors": ((999, 0), "SiEPIC", "#00008018", "/"),
-    "Lumerical": ((733, 0), "SiEPIC", "#80005718", "hollow"),
+    "FDTD": ((733, 0), "SiEPIC", "#80005718", "hollow"),
     "BlackBox": ((998, 0), "SiEPIC", "#00408018", "solid"),
 }
 
@@ -82,20 +84,23 @@ for name in ("WAVEGUIDES.xml", "WAVEGUIDES_SiN.xml"):
             width = dev_rec_width if dev_rec_width > 0 else float(prop.find("width").text) + 2.0
             target_neff = 2.1 if "SiN" in name else 3.5
             limit_layer = "sin" if "SiN" in name else "si"
-            num_modes = 2 if "TM" in name else 1
+            num_modes = (2 if "TE" in name else 1) if "TM" in name else 1
+            added_solver_modes = (0 if "TE" in name else 1) if "TM" in name else 0
             if name.startswith("MM_"):
+                added_solver_modes = 0
                 if name.endswith("_3000"):
-                    num_modes = 14
+                    num_modes = 7 if "SiN" in name else 17
                 elif name.endswith("_2000"):
-                    num_modes = 10
+                    num_modes = 12
                 else:
                     raise RuntimeError("Unrecognized MM waveguide.")
             print(
                 f"""{name!r}: pf.PortSpec(
     description={desc!r},
-    width={width},
-    limits=(-1.5, 1.5 + {limit_layer}_thickness),
+    width={0.5 + width},
+    limits=(-1, 1 + {limit_layer}_thickness),
     num_modes={num_modes},
+    added_solver_modes={added_solver_modes},
     target_neff={target_neff},
     path_profiles={tuple(path_profiles)},
 ),"""
