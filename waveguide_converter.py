@@ -86,6 +86,7 @@ for name in ("WAVEGUIDES.xml", "WAVEGUIDES_SiN.xml"):
             limit_layer = "sin" if "SiN" in name else "si"
             num_modes = (2 if "TE" in name else 1) if "TM" in name else 1
             added_solver_modes = (0 if "TE" in name else 1) if "TM" in name else 0
+            polarization = '"TM"' if added_solver_modes > 0 else None
             if name.startswith("MM_"):
                 added_solver_modes = 0
                 if name.endswith("_3000"):
@@ -101,6 +102,7 @@ for name in ("WAVEGUIDES.xml", "WAVEGUIDES_SiN.xml"):
     limits=(-1, 1 + {limit_layer}_thickness),
     num_modes={num_modes},
     added_solver_modes={added_solver_modes},
+    polarization={polarization},
     target_neff={target_neff},
     path_profiles={tuple(path_profiles)},
 ),"""
