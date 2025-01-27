@@ -127,7 +127,7 @@ _component_data = {
     "ebeam_BondPad": (
         "EBeam_SiN",
         "ebeam_BondPad",
-        [],
+        [((0, 0), (100, 100), "M2_router")],
         None,
     ),
     "ebeam_DC_2-1_te895": (
@@ -172,7 +172,7 @@ _component_data = {
         "EBeam_SiN",
         "ebeam_gc_te895",
         [
-            ((0.0, 0.0), 180, 'SiN_TE_895_450'),
+            ((0.0, 0.0), 180, "SiN_TE_895_450"),
             ((-29.0, 0), (_te895_vx, 0, _te895_vy), _waist, 90),
         ],
         {"symmetry": (0, -1, 0), "bounds": ((None, -10, None), (25, 10, None))},
@@ -446,7 +446,14 @@ def component(
         z = 1.0
     for data in port_data:
         if len(data) == 3:
-            port = pf.Port(data[0], data[1], technology.ports[data[2]])
+            if isinstance(data[1], tuple):
+                terminal = pf.Terminal(
+                    technology.layers[data[2]].layer, pf.Rectangle(center=data[0], size=data[1])
+                )
+                c.add_terminal(terminal)
+            else:
+                port = pf.Port(data[0], data[1], technology.ports[data[2]])
+                c.add_port(port)
         else:
             port = pf.GaussianPort(
                 data[0] + (z,),
@@ -454,7 +461,7 @@ def component(
                 waist_radius=data[2],
                 polarization_angle=data[3],
             )
-        c.add_port(port)
+            c.add_port(port)
 
     # Add model
     if kwargs is not None:
