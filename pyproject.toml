@@ -1,6 +1,6 @@
 [project]
 name = "siepic-forge"
-version = "1.1.0rc1"
+version = "1.1.0rc2"
 authors = [{name = "Flexcompute Inc.", email = "info@flexcompute.com"}]
 description = "SiEPIC PDK implementation for PhotonForge"
 readme = "README.md"
