@@ -155,7 +155,7 @@ _component_data = {
     "ebeam_Polarizer_TM_1550_UQAM": (
         "EBeam_SiN",
         "ebeam_Polarizer_TM_1550_UQAM",
-        [((-6.0, 0.0), 0, "SiN_TE_1550_1000"), ((6.0, 0.0), 180, "SiN_TE_1550_1000")],
+        [((-6.0, 0.0), 0, "SiN_TE-TM_1550_1000"), ((6.0, 0.0), 180, "SiN_TE-TM_1550_1000")],
         {},
     ),
     "ebeam_YBranch_895": (

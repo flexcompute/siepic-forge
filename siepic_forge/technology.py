@@ -341,6 +341,17 @@ def ebeam(
             target_neff=2.1,
             path_profiles=((1.0, 0.0, (4, 0)),),
         ),
+        # Added for ebeam_Polarizer_TM_1550_UQAM
+        "SiN_TE-TM_1550_1000": pf.PortSpec(
+            description="SiN Strip TM 1550 nm, w=1000 nm",
+            width=3.0,
+            limits=(-1.5, 1.5 + sin_thickness),
+            num_modes=2,
+            added_solver_modes=0,
+            polarization=None,
+            target_neff=2.1,
+            path_profiles=((1.0, 0.0, (4, 0)),),
+        ),
         "SiN_TE_1310_750": pf.PortSpec(
             description="SiN Strip TE 1310 nm, w=750 nm",
             width=3.0,
