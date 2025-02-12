@@ -39,7 +39,7 @@ def ebeam(
         "electrical": td.LossyMetalMedium(
             conductivity=17,
             frequency_range=[0.1e9, 200e9],
-            fit_param=td.SkinDepthFitterParam(max_num_poles=16),
+            fit_param=td.SurfaceImpedanceFitterParam(max_num_poles=16),
         ),
     },
     heater_metal: dict[str, _Medium] = {
@@ -47,7 +47,7 @@ def ebeam(
         "electrical": td.LossyMetalMedium(
             conductivity=1.6,
             frequency_range=[0.1e9, 200e9],
-            fit_param=td.SkinDepthFitterParam(max_num_poles=16),
+            fit_param=td.SurfaceImpedanceFitterParam(max_num_poles=16),
         ),
     },
     opening: _Medium = td.Medium(permittivity=1.0),
