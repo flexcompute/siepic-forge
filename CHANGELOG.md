@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.1.0 - Unreleased
+## v1.1.0 - 2025-03-04
 
 ### Added
 - Electrical interfaces.
