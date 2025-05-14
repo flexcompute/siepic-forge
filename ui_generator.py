@@ -86,13 +86,13 @@ def process(name, value, tooltip):
         arg["type"] = "number"
         if "angle" in name:
             arg["suffix"] = "°"
-            arg["validates"] = ["min", "max"]
-            arg["validatesArgs"] = {"min": [-90], "max": [90]}
+            arg["validates"] = ["exclusiveMin", "exclusiveMax"]
+            arg["validatesArgs"] = {"exclusiveMin": [-90], "exclusiveMax": [90]}
         else:
             arg["suffix"] = "μm"
             if any(w in name for w in ("thickness", "depth", "separation", "gap")):
-                arg["validates"] = ["min"]
-                arg["validatesArgs"] = {"min": [0]}
+                arg["validates"] = ["exclusiveMin"]
+                arg["validatesArgs"] = {"exclusiveMin": [0]}
     elif isinstance(value, siepic.technology._Medium):
         arg["type"] = "medium"
         d = value.dict()
