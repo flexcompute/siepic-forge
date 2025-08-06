@@ -18,7 +18,7 @@ Installation via `pip`:
 ### PhotonForge Web UI
 
 1. [Download from PyPI](https://pypi.org/project/siepic-forge/#files) the
-   latest wheel file: `imec_isipp200_ip_forge-*-py3-none-any.whl`.
+   latest wheel file: `siepic_forge-*-py3-none-any.whl`.
 
 2. In the PhotonForge web interface, upload that file to load the EBeam PDK.
 
