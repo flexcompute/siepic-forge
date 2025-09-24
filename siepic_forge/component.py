@@ -62,6 +62,7 @@ _component_data = {
             ((12.88, 0.975), 180, "SiN_TE_1550_750"),
         ],
         None,
+        "mmi",
     ),
     "GC_SiN_TE_1310_8degOxide_BB": (
         "EBeam_SiN",
@@ -71,6 +72,7 @@ _component_data = {
             ((-29.7, 0.0), (_vx8, 0, _vy8), _waist, 90),
         ],
         None,
+        "grating-coupler",
     ),
     "GC_SiN_TE_1550_8degOxide_BB": (
         "EBeam_SiN",
@@ -80,6 +82,7 @@ _component_data = {
             ((-29.7, 0.0), (_vx8, 0, _vy8), _waist, 90),
         ],
         None,
+        "grating-coupler",
     ),
     "ebeam_MMI_2x2_5050_te1310": (
         "EBeam_SiN",
@@ -91,6 +94,7 @@ _component_data = {
             ((16.72, 1.2), 180, "SiN_TE_1550_800"),
         ],
         {"port_symmetries": _symmetries_mmi22},
+        "mmi",
     ),
     "ebeam_YBranch_te1310": (
         "EBeam_SiN",
@@ -101,6 +105,7 @@ _component_data = {
             ((15.5, 1.0), 180, "SiN_TE_1310_800"),
         ],
         {"port_symmetries": _symmetries_3port},
+        "y-splitter",
     ),
     "crossing_horizontal": (
         "EBeam_SiN",
@@ -112,6 +117,7 @@ _component_data = {
             ((37.83, 17.12), 180, "SiN_TE_1550_750"),
         ],
         {"port_symmetries": _symmetries_directional_coupler},
+        "crossing",
     ),
     "crossing_manhattan": (
         "EBeam_SiN",
@@ -123,12 +129,14 @@ _component_data = {
             ((0.0, 3.5), 270, "SiN_TE_1550_750"),
         ],
         {"port_symmetries": _symmetries_crossing2},
+        "crossing",
     ),
     "ebeam_BondPad": (
         "EBeam_SiN",
         "ebeam_BondPad",
         [((0, 0), (100, 100), "M2_router")],
         None,
+        "bondpad",
     ),
     "ebeam_DC_2-1_te895": (
         "EBeam_SiN",
@@ -140,6 +148,7 @@ _component_data = {
             ((14.56, 2.285), 180, "SiN_TE_895_450"),
         ],
         {"port_symmetries": _symmetries_directional_coupler},
+        "dc",
     ),
     "ebeam_DC_te895": (
         "EBeam_SiN",
@@ -151,12 +160,14 @@ _component_data = {
             ((14.137, 2.285), 180, "SiN_TE_895_450"),
         ],
         {"port_symmetries": _symmetries_directional_coupler},
+        "dc",
     ),
     "ebeam_Polarizer_TM_1550_UQAM": (
         "EBeam_SiN",
         "ebeam_Polarizer_TM_1550_UQAM",
         [((-6.0, 0.0), 0, "SiN_TE-TM_1550_1000"), ((6.0, 0.0), 180, "SiN_TE-TM_1550_1000")],
         {},
+        None,
     ),
     "ebeam_YBranch_895": (
         "EBeam_SiN",
@@ -167,6 +178,7 @@ _component_data = {
             ((15.0, 2.75), 180, "SiN_TE_895_450"),
         ],
         {"port_symmetries": _symmetries_3port},
+        "y-splitter",
     ),
     "ebeam_gc_te895": (
         "EBeam_SiN",
@@ -176,18 +188,21 @@ _component_data = {
             ((-29.0, 0), (_te895_vx, 0, _te895_vy), _waist, 90),
         ],
         {"symmetry": (0, -1, 0), "bounds": ((None, -10, None), (25, 10, None))},
+        "grating-coupler",
     ),
     "ebeam_terminator_SiN_1550": (
         "EBeam_SiN",
         "ebeam_terminator_SiN_1550",
         [((0.0, 0.0), 180, "SiN_TE_1550_750")],
         {},
+        "termination",
     ),
     "ebeam_terminator_SiN_te895": (
         "EBeam_SiN",
         "ebeam_terminator_SiN_te895",
         [((0.0, 0.0), 180, "SiN_TE_895_450")],
         {},
+        "termination",
     ),
     "taper_SiN_750_3000": (
         "EBeam_SiN",
@@ -197,6 +212,7 @@ _component_data = {
             ((50.0, 0.0), 180, "MM_SiN_TE_1550_3000"),
         ],
         {},
+        "taper",
     ),
     "GC_TE_1310_8degOxide_BB": (
         "EBeam",
@@ -206,6 +222,7 @@ _component_data = {
             ((-20.4, 0.0), (_vx8, 0, _vy8), _waist, 90),
         ],
         None,
+        "grating-coupler",
     ),
     "GC_TE_1550_8degOxide_BB": (
         "EBeam",
@@ -215,6 +232,7 @@ _component_data = {
             ((-20.4, 0.0), (_vx8, 0, _vy8), _waist, 90),
         ],
         None,
+        "grating-coupler",
     ),
     "GC_TM_1310_8degOxide_BB": (
         "EBeam",
@@ -224,6 +242,7 @@ _component_data = {
             ((-20.4, 0.0), (_vx8, 0, _vy8), _waist, 0),
         ],
         None,
+        "grating-coupler",
     ),
     "GC_TM_1550_8degOxide_BB": (
         "EBeam",
@@ -233,6 +252,7 @@ _component_data = {
             ((-20.4, 0.0), (_vx8, 0, _vy8), _waist, 0),
         ],
         None,
+        "grating-coupler",
     ),
     "ebeam_adiabatic_te1550": (
         "EBeam",
@@ -244,6 +264,7 @@ _component_data = {
             ((195.9, 1.5), 180, "TE_1550_500"),
         ],
         {},
+        "dc",
     ),
     "ebeam_adiabatic_tm1550": (
         "EBeam",
@@ -255,6 +276,7 @@ _component_data = {
             ((217.9, 1.5), 180, "TM_1550_500"),
         ],
         {},
+        "dc",
     ),
     "ebeam_bdc_te1550": (
         "EBeam",
@@ -266,6 +288,7 @@ _component_data = {
             ((35.3, 2.35), 180, "TE_1550_500"),
         ],
         {},
+        "dc",
     ),
     "ebeam_crossing4": (
         "EBeam",
@@ -277,6 +300,7 @@ _component_data = {
             ((0.0, 4.8), 270, "TE_1550_500"),
         ],
         {"port_symmetries": _symmetries_crossing},
+        "crossing",
     ),
     "ebeam_gc_te1550": (
         "EBeam",
@@ -286,6 +310,7 @@ _component_data = {
             ((-20.4, 0.0), (_te1550_vx, 0, _te1550_vy), _waist, 90),
         ],
         {"symmetry": (0, -1, 0), "bounds": ((-33, -11, None), (None, 11, None))},
+        "grating-coupler",
     ),
     "ebeam_gc_tm1550": (
         "EBeam",
@@ -295,6 +320,7 @@ _component_data = {
             ((-24.4, 0.0), (_tm1550_vx, 0, _tm1550_vy), _waist, 0),
         ],
         {"symmetry": (0, 1, 0), "bounds": ((None, -11, None), (None, 11, None))},
+        "grating-coupler",
     ),
     "ebeam_routing_taper_te1550_w=500nm_to_w=3000nm_L=20um": (
         "EBeam",
@@ -304,6 +330,7 @@ _component_data = {
             ((20.0, 0.0), 180, "MM_TE_1550_3000"),
         ],
         {},
+        "taper",
     ),
     "ebeam_routing_taper_te1550_w=500nm_to_w=3000nm_L=40um": (
         "EBeam",
@@ -313,6 +340,7 @@ _component_data = {
             ((40.0, 0.0), 180, "MM_TE_1550_3000"),
         ],
         {},
+        "taper",
     ),
     "ebeam_splitter_swg_assist_te1310": (
         "EBeam",
@@ -324,6 +352,7 @@ _component_data = {
             ((63.001, 2.0), 180, "TE_1310_350"),
         ],
         {},
+        "dc",
     ),
     "ebeam_splitter_swg_assist_te1550": (
         "EBeam",
@@ -335,24 +364,28 @@ _component_data = {
             ((63.001, 1.975), 180, "TE_1550_500"),
         ],
         {},
+        "dc",
     ),
     "ebeam_terminator_te1310": (
         "EBeam",
         "ebeam_terminator_te1310",
         [((0.0, 0.0), 180, "TE_1310_350")],
         {},
+        "termination",
     ),
     "ebeam_terminator_te1550": (
         "EBeam",
         "ebeam_terminator_te1550",
         [((0.0, 0.0), 180, "TE_1550_500")],
         {},
+        "termination",
     ),
     "ebeam_terminator_tm1550": (
         "EBeam",
         "ebeam_terminator_tm1550",
         [((0.0, 0.0), 180, "TM_1550_500")],
         {},
+        "termination",
     ),
     "ebeam_y_1550": (
         "EBeam",
@@ -363,6 +396,7 @@ _component_data = {
             ((7.4, 2.75), 180, "TE_1550_500"),
         ],
         {"port_symmetries": _symmetries_3port},
+        "y-splitter",
     ),
     "ebeam_y_adiabatic": (
         "EBeam",
@@ -373,6 +407,7 @@ _component_data = {
             ((50.05, 1.25), 180, "TE-TM_1550_450"),
         ],
         {"port_symmetries": _symmetries_3port},
+        "y-splitter",
     ),
     "ebeam_y_adiabatic_500pin": (
         "EBeam",
@@ -383,18 +418,21 @@ _component_data = {
             ((51.0, 1.25), 180, "TE_1550_500"),
         ],
         {"port_symmetries": _symmetries_3port},
+        "y-splitter",
     ),
     "taper_si_simm_1310": (
         "EBeam",
         "taper_si_simm_1310",
         [((50.0, 0.0), 180, "MM_TE_1550_3000"), ((0.0, 0.0), 0, "TE_1310_350")],
         {},
+        "taper",
     ),
     "taper_si_simm_1550": (
         "EBeam",
         "taper_si_simm_1550",
         [((50.0, 0.0), 180, "MM_TE_1550_3000"), ((0.0, 0.0), 0, "TE_1550_500")],
         {},
+        "taper",
     ),
 }
 
@@ -419,7 +457,9 @@ def component(
         The available component names are listed in the module-level tuple
         ``component_names``.
     """
-    family, libname, port_data, kwargs = _component_data.get(cell_name, (None, None, None, None))
+    family, libname, port_data, kwargs, thumbnail = _component_data.get(
+        cell_name, (None, None, None, None)
+    )
     if family is None:
         raise KeyError(f"{cell_name} is not a library component.")
 
@@ -437,6 +477,9 @@ def component(
     gdsii = files("siepic_forge") / "library" / family / (libname + ".gds")
     with as_file(gdsii) as fname:
         c = pf.load_layout(fname, technology=technology)[cell_name]
+
+    if thumbnail:
+        c.properties.__thumbnail__ = thumbnail
 
     # Add ports
     z = technology.parametric_kwargs.get("top_oxide_thickness", -1.0)
