@@ -64,7 +64,7 @@ _component_data = {
             ((12.88, 0.975), 180, "SiN_TE_1550_750"),
         ],
         None,
-        "mmi",
+        "mmi1x2",
     ),
     "GC_SiN_TE_1310_8degOxide_BB": (
         "EBeam_SiN",
@@ -74,7 +74,7 @@ _component_data = {
             ((-29.7, 0.0), (_vx8, 0, _vy8), _waist, 90),
         ],
         None,
-        "grating-coupler",
+        "grating_coupler",
     ),
     "GC_SiN_TE_1550_8degOxide_BB": (
         "EBeam_SiN",
@@ -84,7 +84,7 @@ _component_data = {
             ((-29.7, 0.0), (_vx8, 0, _vy8), _waist, 90),
         ],
         None,
-        "grating-coupler",
+        "grating_coupler",
     ),
     "ebeam_MMI_2x2_5050_te1310": (
         "EBeam_SiN",
@@ -96,7 +96,7 @@ _component_data = {
             ((16.72, 1.2), 180, "SiN_TE_1550_800"),
         ],
         {"port_symmetries": _symmetries_mmi22},
-        "mmi",
+        "mmi2x2",
     ),
     "ebeam_YBranch_te1310": (
         "EBeam_SiN",
@@ -169,7 +169,7 @@ _component_data = {
         "ebeam_Polarizer_TM_1550_UQAM",
         [((-6.0, 0.0), 0, "SiN_TE-TM_1550_1000"), ((6.0, 0.0), 180, "SiN_TE-TM_1550_1000")],
         {},
-        None,
+        "transition",
     ),
     "ebeam_YBranch_895": (
         "EBeam_SiN",
@@ -190,7 +190,7 @@ _component_data = {
             ((-29.0, 0), (_te895_vx, 0, _te895_vy), _waist, 90),
         ],
         {"symmetry": (0, -1, 0), "bounds": ((None, -10, None), (25, 10, None))},
-        "grating-coupler",
+        "grating_coupler",
     ),
     "ebeam_terminator_SiN_1550": (
         "EBeam_SiN",
@@ -254,7 +254,7 @@ _component_data = {
             ((-20.4, 0.0), (_vx8, 0, _vy8), _waist, 0),
         ],
         None,
-        "grating-coupler",
+        "grating_coupler",
     ),
     "ebeam_adiabatic_te1550": (
         "EBeam",
@@ -312,7 +312,7 @@ _component_data = {
             ((-20.4, 0.0), (_te1550_vx, 0, _te1550_vy), _waist, 90),
         ],
         {"symmetry": (0, -1, 0), "bounds": ((-33, -11, None), (None, 11, None))},
-        "grating-coupler",
+        "grating_coupler",
     ),
     "ebeam_gc_tm1550": (
         "EBeam",
@@ -322,7 +322,7 @@ _component_data = {
             ((-24.4, 0.0), (_tm1550_vx, 0, _tm1550_vy), _waist, 0),
         ],
         {"symmetry": (0, 1, 0), "bounds": ((None, -11, None), (None, 11, None))},
-        "grating-coupler",
+        "grating_coupler",
     ),
     "ebeam_routing_taper_te1550_w=500nm_to_w=3000nm_L=20um": (
         "EBeam",
