@@ -4,9 +4,11 @@ except ImportError:
     from importlib_resources import files, as_file
 
 import math
+import typing
 import warnings
 
 import photonforge as pf
+import photonforge.typing as pft
 
 
 _symmetries_2port = [("P0", "P1", {"P1": "P0"})]
@@ -440,7 +442,7 @@ component_names = set(_component_data.keys())
 
 
 def component(
-    cell_name: str, technology: pf.Technology = None, tidy3d_model_kwargs: dict = {}
+    cell_name: str, technology: typing.Optional[pf.Technology] = None, tidy3d_model_kwargs: pft.kwargs_for(pf.Tidy3DModel) = {}
 ) -> pf.Component:
     """Load a component from the default PDK library.
 

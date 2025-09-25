@@ -1,40 +1,38 @@
 import tidy3d as td
 import photonforge as pf
-
-
-_Medium = td.components.medium.MediumType
+import photonforge.typing as pft
 
 
 @pf.parametric_technology
 def ebeam(
     *,
-    si_thickness: float = 0.220,
-    si_slab_thickness: float = 0.090,
-    sin_thickness: float = 0.400,
-    si_mask_dilation: float = 0.0,
-    si_slab_mask_dilation: float = 0.0,
-    sin_mask_dilation: float = 0.0,
-    sidewall_angle: float = 0.0,
-    metal_si_separation: float = 2.2,
-    router_thickness: float = 0.6,
-    heater_thickness: float = 0.2,
-    top_oxide_thickness: float = 0.3,
-    bottom_oxide_thickness: float = 3.017,
+    si_thickness: pft.PositiveDimension = 0.220,
+    si_slab_thickness: pft.PositiveDimension = 0.090,
+    sin_thickness: pft.PositiveDimension = 0.400,
+    si_mask_dilation: pft.Coordinate = 0.0,
+    si_slab_mask_dilation: pft.Coordinate = 0.0,
+    sin_mask_dilation: pft.Coordinate = 0.0,
+    sidewall_angle: pft.Angle = 0.0,
+    metal_si_separation: pft.Dimension = 2.2,
+    router_thickness: pft.PositiveDimension = 0.6,
+    heater_thickness: pft.PositiveDimension = 0.2,
+    top_oxide_thickness: pft.PositiveDimension = 0.3,
+    bottom_oxide_thickness: pft.PositiveDimension = 3.017,
     include_top_opening: bool = False,
     include_substrate: bool = False,
-    sio2: dict[str, _Medium] = {
+    sio2: dict[str, pft.Medium] = {
         "optical": td.material_library["SiO2"]["Palik_Lossless"],
         "electrical": td.Medium(permittivity=4.2, name="SiO2"),
     },
-    si: dict[str, _Medium] = {
+    si: dict[str, pft.Medium] = {
         "optical": td.material_library["cSi"]["Li1993_293K"],
         "electrical": td.Medium(permittivity=12.3, name="Si"),
     },
-    sin: dict[str, _Medium] = {
+    sin: dict[str, pft.Medium] = {
         "optical": td.material_library["Si3N4"]["Luke2015PMLStable"],
         "electrical": td.Medium(permittivity=7.5, name="Si3N4"),
     },
-    router_metal: dict[str, _Medium] = {
+    router_metal: dict[str, pft.Medium] = {
         "optical": td.material_library["Au"]["JohnsonChristy1972"],
         "electrical": td.LossyMetalMedium(
             conductivity=17,
@@ -42,7 +40,7 @@ def ebeam(
             fit_param=td.SurfaceImpedanceFitterParam(max_num_poles=16),
         ),
     },
-    heater_metal: dict[str, _Medium] = {
+    heater_metal: dict[str, pft.Medium] = {
         "optical": td.material_library["W"]["Werner2009"],
         "electrical": td.LossyMetalMedium(
             conductivity=1.6,
@@ -50,7 +48,7 @@ def ebeam(
             fit_param=td.SurfaceImpedanceFitterParam(max_num_poles=16),
         ),
     },
-    opening: _Medium = td.Medium(permittivity=1.0),
+    opening: pft.Medium = td.Medium(permittivity=1.0),
 ) -> pf.Technology:
     """Create a technology for the e-beam PDK.
 
@@ -58,34 +56,31 @@ def ebeam(
     opening windows.
 
     Args:
-        si_thickness (float): Full silicon layer thickness.
-        si_slab_thickness (float): Partially etched slab thickness in
-          silicon.
-        sin_thickness (float): SiN layer thickness.
-        si_mask_dilation (float): Mask dilation for the full-thickness Si
+        si_thickness: Full silicon layer thickness.
+        si_slab_thickness: Partially etched slab thickness in silicon.
+        sin_thickness: SiN layer thickness.
+        si_mask_dilation: Mask dilation for the full-thickness Si layer.
+        si_slab_mask_dilation: Mask dilation for the partially etched Si
           layer.
-        si_slab_mask_dilation (float): Mask dilation for the partially
-          etched Si layer.
-        sin_mask_dilation (float): Mask dilation for the SiN layer.
-        sidewall_angle (float): Sidewall angle (in degrees) for Si and SiN
-          etching.
-        metal_si_separation (float): Separation between the metal layers and
-          the Si layer.
-        router_thickness (float): Thickness of the routing metal layer.
-        heater_thickness (float): Thickness of the heater metal layer.
-        top_oxide_thickness (float): Thickness of the top oxide clad,
-          measured from the substrate.
-        bottom_oxide_thickness (float): Thickness of the bottom oxide clad.
-        include_top_opening (bool): Flag indicating whether or not to
-          include the region above the top oxide.
-        include_substrate (bool): Flag indicating whether or not to include
-          the silicon substrate.
-        sio2 (Medium): Background medium.
-        si (Medium): Silicon medium.
-        sin (Medium): Silicon nitride medium.
-        router_metal (Medium): Routing metal medium.
-        heater_metal (Medium): Heater metal medium.
-        opening (Medium): Medium for openings.
+        sin_mask_dilation: Mask dilation for the SiN layer.
+        sidewall_angle: Sidewall angle (in degrees) for Si and SiN etching.
+        metal_si_separation: Separation between the metal layers and the Si
+          layer.
+        router_thickness: Thickness of the routing metal layer.
+        heater_thickness: Thickness of the heater metal layer.
+        top_oxide_thickness: Thickness of the top oxide clad, measured from
+          the substrate.
+        bottom_oxide_thickness: Thickness of the bottom oxide clad.
+        include_top_opening: Flag indicating whether or not to include the
+          region above the top oxide.
+        include_substrate: Flag indicating whether or not to include the
+          silicon substrate.
+        sio2: Background medium.
+        si: Silicon medium.
+        sin: Silicon nitride medium.
+        router_metal: Routing metal medium.
+        heater_metal: Heater metal medium.
+        opening: Medium for openings.
 
     Returns:
         Technology: E-Beam PDK technology definition.
