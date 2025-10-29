@@ -442,7 +442,9 @@ component_names = set(_component_data.keys())
 
 
 def component(
-    cell_name: str, technology: typing.Optional[pf.Technology] = None, tidy3d_model_kwargs: pft.kwargs_for(pf.Tidy3DModel) = {}
+    cell_name: str,
+    technology: typing.Optional[pf.Technology] = None,
+    tidy3d_model_kwargs: pft.kwargs_for(pf.Tidy3DModel) = {},
 ) -> pf.Component:
     """Load a component from the default PDK library.
 
@@ -482,6 +484,11 @@ def component(
 
     if thumbnail:
         c.properties.__thumbnail__ = thumbnail
+
+    for layer, labels in c.labels.items():
+        for label in labels:
+            if "lumerical" in label.text.lower():
+                c.remove(label, layer=layer)
 
     # Add ports
     z = technology.parametric_kwargs.get("top_oxide_thickness", -1.0)
