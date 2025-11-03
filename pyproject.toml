@@ -14,7 +14,10 @@ homepage = "https://github.com/flexcompute/siepic-forge"
 documentation = "https://github.com/flexcompute/siepic-forge"
 
 [tool.setuptools]
-packages = ["siepic_forge"]
+packages = ["siepic_forge", "siepic_forge.library.EBeam", "siepic_forge.library.EBeam_SiN"]
+
+[tool.setuptools.package-data]
+siepic_forge = ["library/*/*.gds"]
 
 [tool.black]
 line-length = 100
