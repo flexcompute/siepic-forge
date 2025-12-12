@@ -33,7 +33,7 @@ def ebeam(
         "electrical": td.Medium(permittivity=7.5, name="Si3N4"),
     },
     router_metal: dict[str, pft.Medium] = {
-        "optical": td.material_library["Au"]["JohnsonChristy1972"],
+        "optical": td.material_library["Au"]["Olmon2012evaporated"],
         "electrical": td.LossyMetalMedium(
             conductivity=17,
             frequency_range=[0.1e9, 200e9],
