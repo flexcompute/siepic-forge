@@ -1,8 +1,8 @@
 # SiEPIC Forge
 
 This python module implements the [SiEPIC EBeam
-PDK](https://github.com/SiEPIC/SiEPIC_EBeam_PDK) PDK as components and
-technology specification for
+PDK](https://github.com/SiEPIC/SiEPIC_EBeam_PDK) for Si and SiN processes as
+components and technology specifications for
 [PhotonForge](https://docs.flexcompute.com/projects/photonforge/)
 
 
@@ -23,12 +23,13 @@ default:
     import photonforge as pf
     import siepic_forge as siepic
 
-    tech = siepic.ebeam()
+    tech = siepic.ebeam_si()
     pf.config.default_technology = tech
 
 
-The `ebeam` function creates a parametric technology and accepts a number of
-parameters to fine-tune the technology.
+The `ebeam_si` function creates a parametric technology and accepts a number of
+parameters to fine-tune the technology. The EBeam SiN process is available
+through the `ebeam_sin` parametric technology.
 
 PDK components are available through the `component` function, which takes a
 component name as first argument. The list of component names is available as a
@@ -41,7 +42,9 @@ set `component_names`:
 
 More information can be obtained in the documentation for each function:
 
-    help(siepic.ebeam)
+    help(siepic.ebeam_si)
+
+    help(siepic.ebeam_sin)
 
     help(siepic.component)
 
@@ -54,6 +57,14 @@ but the actual final dimensions may differ due to several fabrication-specific
 effects. In particular, doping profiles are represented with hard-boundary,
 homogeneous solids, but, in practice will present process-dependent variations
 with smooth boundaries.
+
+
+## References
+
+Process stack and other information obtained from [ANT
+NanoSOI](https://www.appliednt.com/nanosoi/).
+
+The GDSII cell library comes from the main PDK repository.
 
 
 ## Third-Party Licenses
@@ -81,11 +92,3 @@ with smooth boundaries.
   > LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
   > FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
   > DEALINGS IN THE SOFTWARE.
-
-
-## Changelog
-
-### v1.1.0 - 2025-03-04
-
-- Added Electrical interfaces.
-- Added TM port specification for 1310 nm with 350 nm width.

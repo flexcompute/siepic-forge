@@ -4,7 +4,6 @@ except ImportError:
     from importlib_resources import files, as_file
 
 import math
-import typing
 import warnings
 
 import photonforge as pf
@@ -50,7 +49,7 @@ _angle = -21 * math.pi / 180
 _te1550_vx = math.sin(_angle)
 _te1550_vy = -math.cos(_angle)
 
-_angle = 7.5 * math.pi / 180
+_angle = 10 * math.pi / 180
 _te895_vx = math.sin(_angle)
 _te895_vy = -math.cos(_angle)
 
@@ -189,8 +188,15 @@ _component_data = {
             ((0.0, 0.0), 180, "SiN_TE_895_450"),
             ((-29.0, 0), (_te895_vx, 0, _te895_vy), _waist, 90),
         ],
-        {"symmetry": (0, -1, 0), "bounds": ((None, -10, None), (25, 10, None))},
+        {"symmetry": (0, -1, 0), "bounds": ((None, -10, None), (None, 10, None))},
         "grating_coupler",
+    ),
+    "ebeam_terminator_SiN_1310": (
+        "EBeam_SiN",
+        "ebeam_terminator_SiN_1310",
+        [((0.0, 0.0), 180, "SiN_TE_1310_800")],
+        {},
+        "termination",
     ),
     "ebeam_terminator_SiN_1550": (
         "EBeam_SiN",
@@ -206,13 +212,24 @@ _component_data = {
         {},
         "termination",
     ),
+    "port_SiN_800": (
+        "EBeam_SiN",
+        "port_SiN_800",
+        [((1.0, 0.0), 180, "SiN_TE_1550_800")],
+        {},
+        "termination",
+    ),
     "taper_SiN_750_3000": (
         "EBeam_SiN",
         "taper_SiN_750_3000",
-        [
-            ((0.0, 0.0), 0, "SiN_TE_1550_750"),
-            ((50.0, 0.0), 180, "MM_SiN_TE_1550_3000"),
-        ],
+        [((0.0, 0.0), 0, "SiN_TE_1550_750"), ((50.0, 0.0), 180, "MM_SiN_TE_1550_3000")],
+        {},
+        "taper",
+    ),
+    "taper_SiN_750_800": (
+        "EBeam_SiN",
+        "taper_SiN_750_800",
+        [((0.0, 0.0), 0, "SiN_TE_1550_800"), ((2.0, 0.0), 180, "SiN_TE_1550_750")],
         {},
         "taper",
     ),
@@ -389,6 +406,17 @@ _component_data = {
         {},
         "termination",
     ),
+    "ebeam_y_1310": (
+        "EBeam",
+        "ebeam_y_1310",
+        [
+            ((-9.4, 0.0), 0, "TE_1310_350"),
+            ((9.4, -2.75), 180, "TE_1310_350"),
+            ((9.4, 2.75), 180, "TE_1310_350"),
+        ],
+        {"port_symmetries": _symmetries_3port},
+        "y-splitter",
+    ),
     "ebeam_y_1550": (
         "EBeam",
         "ebeam_y_1550",
@@ -443,7 +471,7 @@ component_names = set(_component_data.keys())
 
 def component(
     cell_name: str,
-    technology: typing.Optional[pf.Technology] = None,
+    technology: pf.Technology | None = None,
     tidy3d_model_kwargs: pft.kwargs_for(pf.Tidy3DModel) = {},
 ) -> pf.Component:
     """Load a component from the default PDK library.
@@ -469,12 +497,12 @@ def component(
 
     if technology is None:
         technology = pf.config.default_technology
-        if not technology.name.startswith("SiEPIC EBeam"):
+        if "SiEPIC" not in technology.name:
             warnings.warn(
-                f"Current default technology {technology.name} does not seem supported by the "
-                "SiEPIC EBeam UW component library",
+                f"Current default technology {technology.name} does not seem compatible with the "
+                f"SiEPIC component library",
                 RuntimeWarning,
-                1,
+                2,
             )
 
     # Load library cell
@@ -491,11 +519,12 @@ def component(
                 c.remove(label, layer=layer)
 
     # Add ports
-    z = technology.parametric_kwargs.get("top_oxide_thickness", -1.0)
-    if z > 0:
-        z += 0.1
-    else:
-        z = 1.0
+    z = (
+        0.1
+        + technology.parametric_kwargs.get("top_oxide_thickness", 3.0)
+        + technology.parametric_kwargs.get("passivation_oxide_thickness", 0.3)
+    )
+    port_error = False
     for data in port_data:
         if len(data) == 3:
             if isinstance(data[1], tuple):
@@ -504,8 +533,17 @@ def component(
                 )
                 c.add_terminal(terminal)
             else:
-                port = pf.Port(data[0], data[1], technology.ports[data[2]])
-                c.add_port(port)
+                port_spec = technology.ports.get(data[2])
+                if port_spec is None:
+                    port_error = True
+                    warnings.warn(
+                        f"Required port spec {data[2]} not available in technology {technology.name!r}. Port skipped.",
+                        RuntimeWarning,
+                        2,
+                    )
+                else:
+                    port = pf.Port(data[0], data[1], port_spec)
+                    c.add_port(port)
         else:
             port = pf.GaussianPort(
                 data[0] + (z,),
@@ -518,6 +556,8 @@ def component(
     # Add model
     if kwargs is not None:
         kwargs = dict(kwargs)
+        if port_error and "port_symmetries" in kwargs:
+            del kwargs["port_symmetries"]
         kwargs.update(tidy3d_model_kwargs)
         c.add_model(pf.Tidy3DModel(**kwargs), "Tidy3D")
 

@@ -1,28 +1,7 @@
+import pathlib
+import subprocess
+import sys
 import xml.etree.ElementTree as et
-
-
-pdk = "/home/lucas/Flexcompute/pdk/SiEPIC_EBeam_PDK/klayout/EBeam"
-
-
-def hex_to_rgba(color):
-    "Convert a hex string to RGBA color components"
-
-    if not isinstance(color, str) or len(color) == 0:
-        raise TypeError("Argument must be a valid string.")
-
-    if color[0] == "#":
-        color = color[1:]
-
-    n = len(color)
-    if n == 3:  # "RGB"
-        return tuple(int(c * 2, 16) for c in color) + (255,)
-    if n == 4:  # "RGBA"
-        return tuple(int(c * 2, 16) for c in color)
-    if n == 6:  # "RRGGBB"
-        return tuple(int(color[i : i + 2], 16) for i in (0, 2, 4)) + (255,)
-    if n == 8:  # "RRGGBBAA"
-        return tuple(int(color[i : i + 2], 16) for i in (0, 2, 4, 6))
-    raise ValueError("Argument not recognized as a hex-valued RGBA color.")
 
 
 # Klayout patterns
@@ -77,28 +56,110 @@ patterns = {
 }
 
 
-def parse(node, group=""):
-    name = node.find("name").text
-    if name == "Si - 90 nm rib":
-        name = "Si slab"
-    elif name == "Lumerical":
-        name = "FDTD"
+def hex_to_rgba(color):
+    "Convert a hex string to RGBA color components"
+
+    if not isinstance(color, str) or len(color) == 0:
+        raise TypeError("Argument must be a valid string.")
+
+    if color[0] == "#":
+        color = color[1:]
+
+    n = len(color)
+    if n == 3:  # "RGB"
+        return tuple(int(c * 2, 16) for c in color) + (255,)
+    if n == 4:  # "RGBA"
+        return tuple(int(c * 2, 16) for c in color)
+    if n == 6:  # "RRGGBB"
+        return tuple(int(color[i : i + 2], 16) for i in (0, 2, 4)) + (255,)
+    if n == 8:  # "RRGGBBAA"
+        return tuple(int(color[i : i + 2], 16) for i in (0, 2, 4, 6))
+    raise ValueError("Argument not recognized as a hex-valued RGBA color.")
+
+
+def parse(layers, node, description=""):
     layer = node.find("source").text
+    if layer == "*/*":
+        return
     i = layer.find("/")
     j = i + layer[i:].find("@")
     layer = (int(layer[:i]), int(layer[i + 1 : j]))
+
+    name = node.find("name").text
     color = node.find("fill-color").text + "18"
-    pattern = patterns[node.find("dither-pattern").text[1:]]
-    print(f"{name!r}: pf.LayerSpec({layer}, {group!r}, {color!r}, {pattern!r}),")
+
+    key = prop.find("dither-pattern").text
+    key = layer if key is None else key[1:]
+    pattern = patterns.get(key, "")
+
+    if layer in layers:
+        other = layers[layer]
+        if len(description) == 0:
+            description = other[2]
+        elif len(other[2]) > 0 and other[2] != description:
+            description += f"/{other[2]}"
+        if len(other[0]) < len(name):
+            if len(description) == 0:
+                description = name
+            name = other[0]
+            color = other[3]
+            pattern = other[4]
+        else:
+            if len(description) == 0:
+                description = other[0]
+    layers[layer] = [name, layer, description, color, pattern]
 
 
-tree = et.parse(f"{pdk}/EBeam.lyp")
-root = tree.getroot()
-for prop in root.findall("properties"):
-    name = prop.find("name").text
-    members = prop.findall("group-members")
-    if len(members) > 0:
-        for member in members:
-            parse(member, name)
-    else:
-        parse(prop)
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        raise RuntimeError(
+            "Please run the script providing the path for the layer properties file: EBeam.lyp"
+        )
+
+    layers = {}
+
+    tree = et.parse(sys.argv[1])
+    root = tree.getroot()
+    for prop in root.findall("properties"):
+        name = prop.find("name").text.strip()
+        members = prop.findall("group-members")
+        if len(members) > 0:
+            for member in members:
+                parse(layers, member, name)
+        else:
+            parse(layers, prop)
+
+    for n, name in (
+        ((1, 0), "Si"),
+        ((2, 0), "Si Slab"),
+        ((4, 0), "SiN"),
+        ((10, 0), "Text"),
+        ((11, 0), "M1_heater"),
+        ((12, 0), "M2_router"),
+        ((13, 0), "M_Open"),
+    ):
+        layer = layers[n]
+        if len(layer[2]) == 0:
+            layer[2] = layer[0]
+        else:
+            layer[2] = f"{layer[2]} - {layer[0]}"
+        layer[0] = name
+
+    names = {n: 0 for n, *_ in layers.values()}
+    for k in sorted(layers):
+        n = layers[k][0]
+        if names[n] > 0:
+            layers[k][0] = f"{n} {names[n]}"
+        names[n] += 1
+
+    lines = [
+        "import photonforge as pf",
+        "_layers = {",
+    ] + [
+        "\t{!r} : pf.LayerSpec({}, {!r}, {!r}, {!r}),".format(*v) for _, v in sorted(layers.items())
+    ]
+    lines.append("}")
+
+    output = pathlib.Path(__file__).parent / "siepic_forge" / "_layers.py"
+    output.write_text("\n".join(lines))
+    subprocess.run(["ruff", "format", output], check=True)

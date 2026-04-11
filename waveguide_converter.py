@@ -1,42 +1,16 @@
-import xml.etree.ElementTree as et
 import re
+import sys
+import xml.etree.ElementTree as et
 
+from siepic_forge._layers import _layers
 
-pdk = "/home/lucas/Flexcompute/pdk/SiEPIC_EBeam_PDK/klayout/EBeam"
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        raise RuntimeError(
+            "Please run the script providing the path for the waveguide files directory: WAVEGUIDES*.xml"
+        )
 
-layers = {
-    "Waveguide": ((1, 99), "Waveguides", "#ff80a818", "\\"),
-    "Si": ((1, 0), "Waveguides", "#ff80a818", "\\\\"),
-    "SiN": ((4, 0), "Waveguides", "#a6cee318", "\\\\"),
-    "Si slab": ((2, 0), "Waveguides", "#80a8ff18", "/"),
-    "Si - 90 nm rib": ((2, 0), "Waveguides", "#80a8ff18", "/"),
-    "Si_Litho193nm": ((1, 69), "Waveguides", "#cc80a818", "\\"),
-    "Oxide open (to BOX)": ((6, 0), "Waveguides", "#ffae0018", "\\"),
-    "Text": ((10, 0), "", "#0000ff18", "\\"),
-    "Si N": ((20, 0), "Doping", "#7000FF18", "\\\\"),
-    "Si N++": ((24, 0), "Doping", "#0000ff18", ":"),
-    "M1_heater": ((11, 0), "Metal", "#ebc63418", "xx"),
-    "M2_router": ((12, 0), "Metal", "#3471eb18", "xx"),
-    "M_Open": ((13, 0), "Metal", "#00000018", "xx"),
-    "VC": ((40, 0), "Metal", "#3a027f18", "xx"),
-    "FloorPlan": ((99, 0), "Misc", "#8000ff18", "hollow"),
-    "Deep Trench": ((201, 0), "Misc", "#c0c0c018", "solid"),
-    "Isolation Trench": ((203, 0), "Misc", "#c0c0c018", "solid"),
-    "Dicing": ((210, 0), "Misc", "#a0a0c018", "solid"),
-    "Chip design area": ((290, 0), "Misc", "#80005718", "hollow"),
-    "Keep out": ((202, 0), "Misc", "#a0a0c018", "//"),
-    "SEM": ((200, 0), "Misc", "#ff00ff18", "\\"),
-    "DevRec": ((68, 0), "SiEPIC", "#00408018", "hollow"),
-    "PinRec": ((1, 10), "SiEPIC", "#00408018", "/"),
-    "PinRecM": ((1, 11), "SiEPIC", "#00408018", "/"),
-    "FbrTgt": ((81, 0), "SiEPIC", "#00408018", "/"),
-    "Errors": ((999, 0), "SiEPIC", "#00008018", "/"),
-    "FDTD": ((733, 0), "SiEPIC", "#80005718", "hollow"),
-    "BlackBox": ((998, 0), "SiEPIC", "#00408018", "solid"),
-}
-
-for name in ("WAVEGUIDES.xml", "WAVEGUIDES_SiN.xml"):
-    tree = et.parse(f"{pdk}/{name}")
+    tree = et.parse(sys.argv[1])
     root = tree.getroot()
     for prop in root.findall("waveguide"):
         desc = prop.find("name").text
@@ -73,7 +47,10 @@ for name in ("WAVEGUIDES.xml", "WAVEGUIDES_SiN.xml"):
         for component in prop.findall("component"):
             width = float(component.find("width").text)
             offset = float(component.find("offset").text)
-            layer = layers[component.find("layer").text][0]
+            layer_name = component.find("layer").text
+            if "Si - 90 nm etch" == layer_name:
+                layer_name = "Si Slab"
+            layer = _layers[layer_name].layer
             if layer == (68, 0):
                 dev_rec_width = width
                 continue
@@ -95,8 +72,7 @@ for name in ("WAVEGUIDES.xml", "WAVEGUIDES_SiN.xml"):
                     num_modes = 12
                 else:
                     raise RuntimeError("Unrecognized MM waveguide.")
-            print(
-                f"""{name!r}: pf.PortSpec(
+        print(f"""{name!r}: pf.PortSpec(
     description={desc!r},
     width={0.5 + width},
     limits=(-1, 1 + {limit_layer}_thickness),
@@ -105,5 +81,4 @@ for name in ("WAVEGUIDES.xml", "WAVEGUIDES_SiN.xml"):
     polarization={polarization},
     target_neff={target_neff},
     path_profiles={tuple(path_profiles)},
-),"""
-            )
+),""")
