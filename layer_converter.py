@@ -113,7 +113,7 @@ def parse(layers, node, description=""):
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         raise RuntimeError(
-            "Please run the script providing the path for the layer properties file: EBeam.lyp"
+            "Please run the script providing the path for the layer properties file: NanoSOI_layers.lyp"
         )
 
     layers = {}
@@ -152,14 +152,17 @@ if __name__ == "__main__":
             layers[k][0] = f"{n} {names[n]}"
         names[n] += 1
 
-    lines = [
-        "import photonforge as pf",
-        "_layers = {",
-    ] + [
-        "\t{!r} : pf.LayerSpec({}, {!r}, {!r}, {!r}),".format(*v) for _, v in sorted(layers.items())
-    ]
-    lines.append("}")
+    for family, skip_layers in (("si", [(4, 0)]), ("sin", [(1, 0), (2, 0)])):
+        lines = [
+            "import photonforge as pf",
+            "_layers = {",
+        ] + [
+            "\t{!r} : pf.LayerSpec({}, {!r}, {!r}, {!r}),".format(*v)
+            for k, v in sorted(layers.items())
+            if k not in skip_layers
+        ]
+        lines.append("}")
 
-    output = pathlib.Path(__file__).parent / "siepic_forge" / "_layers.py"
-    output.write_text("\n".join(lines))
-    subprocess.run(["ruff", "format", output], check=True)
+        output = pathlib.Path(__file__).parent / family / f"siepic_{family}_forge" / "_layers.py"
+        output.write_text("\n".join(lines))
+        subprocess.run(["ruff", "format", output], check=True)

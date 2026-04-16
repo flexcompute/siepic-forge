@@ -1,11 +1,11 @@
 import pathlib
 import re
-import siepic_forge as siepic
+
+import siepic_si_forge as siepic
 
 
 def test_version():
-    assert siepic.__version__ == siepic.ebeam_si().version
-    assert siepic.__version__ == siepic.ebeam_sin().version
+    assert siepic.__version__ == siepic.ebeam().version
     pyproject = pathlib.Path("pyproject.toml")
     if pyproject.is_file():
         contents = pyproject.read_text()

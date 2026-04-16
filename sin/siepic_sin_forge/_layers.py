@@ -1,12 +1,8 @@
 import photonforge as pf
 
 _layers = {
-    "Si": pf.LayerSpec((1, 0), "SiEPIC - Waveguide", "#ff80a818", ""),
     "PinRec": pf.LayerSpec((1, 10), "SiEPIC", "#ff80a818", ""),
     "PinRecM": pf.LayerSpec((1, 11), "SiEPIC", "#80000018", ""),
-    "Si Slab": pf.LayerSpec(
-        (2, 0), "Dedicated Run Layers - Device Layer Partial Etch", "#c080ff18", ""
-    ),
     "SiN": pf.LayerSpec((4, 0), "Silicon Nitride Full Etch", "#c080ff18", "."),
     "Direct Metal": pf.LayerSpec((5, 0), "Dedicated Run Layers", "#80a8ff18", ""),
     "Oxide open to BOX": pf.LayerSpec((6, 0), "Dedicated Run Layers", "#ff000018", ""),

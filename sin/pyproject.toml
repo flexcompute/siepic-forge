@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools >= 45"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "siepic-sin-forge"
+version = "1.2.0"
+authors = [{name = "Flexcompute Inc.", email = "info@flexcompute.com"}]
+description = "SiEPIC EBeam SiN PDK implementation for PhotonForge"
+readme = "README.md"
+dependencies = ["photonforge >= 1.4.0"]  # Need typing submodule
+
+[project.optional-dependencies]
+test = ["pytest >= 7.2"]
+
+[project.urls]
+homepage = "https://github.com/flexcompute/siepic-forge"
+documentation = "https://github.com/flexcompute/siepic-forge"
+
+[tool.setuptools]
+packages = ["siepic_sin_forge", "siepic_sin_forge.library"]
+
+[tool.setuptools.package-data]
+siepic_sin_forge = ["library/*.gds"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+extend-select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "B",   # bugbear
+    "I",   # isort
+    "UP",  # pyupgrade
+    "W",   # pycodestyle
+    "C4",  # flake8-comprehensions
+    "NPY", # numpy-specific rules
+    "RUF", # ruff builtins
+    "ISC", # implicit string concatenation
+    "PIE", # flake8-pie
+    "RSE", # unnecessary parantheses on raised exceptions
+    "PLE", # pylint errors
+    "PLC", # pylint conventions
+]
+
+extend-ignore = [
+    "RUF001",  # ambiguous unicode characters
+    "RUF002",  # ambiguous unicode characters
+    "RUF003",  # ambiguous unicode characters
+    "B006",    # mutable data structures for argument defaults
+    "PLC0206", # Extracting value from dictionary without calling `.items()`
+    "UP038",   # Unions instead of tuples in isinstance/issubclass
+]

@@ -2,12 +2,20 @@ import re
 import sys
 import xml.etree.ElementTree as et
 
-from siepic_forge._layers import _layers
+sys.path.append("./si")
+sys.path.append("./sin")
+
+from siepic_si_forge._layers import _layers as _layers_si
+from siepic_sin_forge._layers import _layers as _layers_sin
+
+_layers = _layers_si | _layers_sin
+
+rename = {"Waveguide": "Si", "Si - 90 nm rib" : "Si Slab"}
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         raise RuntimeError(
-            "Please run the script providing the path for the waveguide files directory: WAVEGUIDES*.xml"
+            "Please run the script providing the path for the waveguides file WAVEGUIDES*.xml"
         )
 
     tree = et.parse(sys.argv[1])
@@ -48,9 +56,7 @@ if __name__ == "__main__":
             width = float(component.find("width").text)
             offset = float(component.find("offset").text)
             layer_name = component.find("layer").text
-            if "Si - 90 nm etch" == layer_name:
-                layer_name = "Si Slab"
-            layer = _layers[layer_name].layer
+            layer = _layers[rename.get(layer_name, layer_name)].layer
             if layer == (68, 0):
                 dev_rec_width = width
                 continue

@@ -1,9 +1,10 @@
 import photonforge as pf
-import siepic_forge as siepic
+
+import siepic_si_forge as siepic
 
 
 def test_export(tmp_path):
-    tech = siepic.ebeam_si()
+    tech = siepic.ebeam()
     tech_file = tmp_path / "tech.phf"
     pf.write_phf(tech_file, tech)
     tech_loaded = pf.load_phf(tech_file)["technologies"][0]
