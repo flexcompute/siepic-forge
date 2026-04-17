@@ -48,7 +48,7 @@ def component(
             )
 
     # Load library cell
-    gdsii = files("siepic_si_forge") / "library" / (libname + ".gds")
+    gdsii = files("siepic_forge") / "library" / (libname + ".gds")
     with as_file(gdsii) as fname:
         c = pf.load_layout(fname, technology=technology)[cell_name]
 

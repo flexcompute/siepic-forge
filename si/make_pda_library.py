@@ -4,7 +4,7 @@ import photonforge as pf
 from photonforge import pda
 from tidy3d.config import get_manager
 
-import siepic_si_forge as siepic
+import siepic_forge as siepic
 
 get_manager().switch_profile("dev")
 
@@ -13,7 +13,7 @@ def create_library():
     tech = siepic.ebeam()
     pf.config.default_technology = tech
 
-    name = "SiEPIC EBeam Si"
+    name = "SiEPIC EBeam"
     version = tech.version
 
     for lib in pda.list_libraries(name):
@@ -33,7 +33,7 @@ def create_library():
 
     # Add sources
     shutil.copytree(
-        "./siepic_si_forge", project.module_path / project.module_name, dirs_exist_ok=True
+        "./siepic_forge", project.module_path / project.module_name, dirs_exist_ok=True
     )
 
     project.save_module()

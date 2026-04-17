@@ -1,7 +1,7 @@
 import pathlib
 import re
 
-import siepic_si_forge as siepic
+import siepic_forge as siepic
 
 
 def test_version():

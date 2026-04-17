@@ -163,6 +163,7 @@ if __name__ == "__main__":
         ]
         lines.append("}")
 
-        output = pathlib.Path(__file__).parent / family / f"siepic_{family}_forge" / "_layers.py"
+        mod_name = "siepic_forge" if family == "si" else f"siepic_{family}_forge"
+        output = pathlib.Path(__file__).parent / family / mod_name / "_layers.py"
         output.write_text("\n".join(lines))
         subprocess.run(["ruff", "format", output], check=True)

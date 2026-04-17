@@ -3,10 +3,10 @@ requires = ["setuptools >= 45"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "siepic-si-forge"
+name = "siepic-forge"
 version = "1.2.0"
 authors = [{name = "Flexcompute Inc.", email = "info@flexcompute.com"}]
-description = "SiEPIC EBeam Si PDK implementation for PhotonForge"
+description = "SiEPIC EBeam PDK implementation for PhotonForge"
 readme = "README.md"
 dependencies = ["photonforge >= 1.4.0"]  # Need typing submodule
 
@@ -18,10 +18,10 @@ homepage = "https://github.com/flexcompute/siepic-forge"
 documentation = "https://github.com/flexcompute/siepic-forge"
 
 [tool.setuptools]
-packages = ["siepic_si_forge", "siepic_si_forge.library"]
+packages = ["siepic_forge", "siepic_forge.library"]
 
 [tool.setuptools.package-data]
-siepic_si_forge = ["library/*.gds"]
+siepic_forge = ["library/*.gds"]
 
 [tool.ruff]
 target-version = "py310"

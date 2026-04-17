@@ -21,7 +21,7 @@ The simplest way to use the this PDK in PhotonForge is to set its technology as
 default:
 
     import photonforge as pf
-    import siepic_si_forge as siepic
+    import siepic_forge as siepic
 
     tech = siepic.ebeam()
     pf.config.default_technology = tech

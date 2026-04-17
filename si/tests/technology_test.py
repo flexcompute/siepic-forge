@@ -1,6 +1,6 @@
 import photonforge as pf
 
-import siepic_si_forge as siepic
+import siepic_forge as siepic
 
 
 def test_export(tmp_path):

@@ -12,7 +12,7 @@ technology specifications for
 
 Installation via `pip`:
 
-    pip install siepic-forge
+    pip install siepic-sin-forge
 
 
 ## Usage

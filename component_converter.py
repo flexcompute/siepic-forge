@@ -8,7 +8,7 @@ import photonforge as pf
 sys.path.append("./si")
 sys.path.append("./sin")
 
-import siepic_si_forge as siepic_si
+import siepic_forge as siepic_si
 import siepic_sin_forge as siepic_sin
 
 preambles = {
@@ -72,7 +72,8 @@ _component_data = {
 for family, preamble in preambles.items():
     lines = []
     technology = siepic_sin.ebeam() if family == "sin" else siepic_si.ebeam()
-    path = pathlib.Path(f"{family}/siepic_{family}_forge/library")
+    mod_name = "siepic_forge" if family == "si" else f"siepic_{family}_forge"
+    path = pathlib.Path(f"{family}/{mod_name}/library")
     for gds_name in sorted(path.glob("*.gds")):
         components = pf.load_layout(gds_name, technology=technology)
         for comp_name in sorted(c.name for c in pf.find_top_level(*components.values())):
@@ -108,6 +109,6 @@ for family, preamble in preambles.items():
 
             lines.append(f"{comp.name!r}: ({gds_name.stem!r}, [{ports}], {model}),")
 
-    output = pathlib.Path(__file__).parent / family / f"siepic_{family}_forge" / "_component_data.py"
+    output = pathlib.Path(__file__).parent / family / mod_name / "_component_data.py"
     output.write_text(preamble + "\n".join(lines) + "\n}")
     subprocess.run(["ruff", "format", output], check=True)

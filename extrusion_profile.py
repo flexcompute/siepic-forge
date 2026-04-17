@@ -5,7 +5,7 @@ import sys
 sys.path.append("./si")
 sys.path.append("./sin")
 
-import siepic_si_forge as siepic_si
+import siepic_forge as siepic_si
 import siepic_sin_forge as siepic_sin
 from matplotlib import pyplot
 

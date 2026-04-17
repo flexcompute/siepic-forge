@@ -5,7 +5,7 @@ import xml.etree.ElementTree as et
 sys.path.append("./si")
 sys.path.append("./sin")
 
-from siepic_si_forge._layers import _layers as _layers_si
+from siepic_forge._layers import _layers as _layers_si
 from siepic_sin_forge._layers import _layers as _layers_sin
 
 _layers = _layers_si | _layers_sin
