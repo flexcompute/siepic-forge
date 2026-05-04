@@ -1,4 +1,5 @@
 import shutil
+from argparse import ArgumentParser
 
 import photonforge as pf
 from photonforge import pda
@@ -32,9 +33,7 @@ def create_library():
     )
 
     # Add sources
-    shutil.copytree(
-        "./siepic_forge", project.module_path / project.module_name, dirs_exist_ok=True
-    )
+    shutil.copytree("./siepic_forge", project.module_path / project.module_name, dirs_exist_ok=True)
 
     project.save_module()
 
@@ -54,7 +53,16 @@ def create_library():
 
 
 if __name__ == "__main__":
-    pda.init("http://localhost:3030", "ws://localhost:3030")
+    parser = ArgumentParser(prog=__file__)
+    parser.add_argument("--profile", default=None, help="tidy3d configuration profile")
+    args = parser.parse_args()
+
+    profile = args.profile
+    if args.profile is not None:
+        get_manager().switch_profile(args.profile)
+
+    pda.init()
+
     try:
         create_library()
     finally:
