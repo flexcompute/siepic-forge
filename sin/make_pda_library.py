@@ -7,8 +7,6 @@ from tidy3d.config import get_manager
 
 import siepic_sin_forge as siepic
 
-get_manager().switch_profile("dev")
-
 
 def create_library():
     tech = siepic.ebeam()
