@@ -8,6 +8,36 @@ from ._layers import _layers
 # https://www.appliednt.com/nanosoi-fabrication-service/
 # https://www.appliednt.com/nanosoi/sys/
 
+_sio2 = {
+    "optical": td.material_library["SiO2"]["Palik_LowLoss"],
+    "electrical": td.Medium(permittivity=4.2, name="SiO2"),
+}
+_si = {
+    "optical": td.material_library["cSi"]["Li1993_293K"],
+    "electrical": td.Medium(permittivity=12.3, name="Si"),
+}
+_sin = {
+    "optical": td.material_library["Si3N4"]["Luke2015PMLStable"],
+    "electrical": td.Medium(permittivity=7.5, name="Si3N4"),
+}
+_router = {
+    "optical": td.material_library["Au"]["Olmon2012evaporated"],
+    "electrical": td.LossyMetalMedium(
+        conductivity=17,
+        frequency_range=[0.1e9, 200e9],
+        fit_param=td.SurfaceImpedanceFitterParam(max_num_poles=16),
+    ),
+}
+_heater = {
+    "optical": td.material_library["W"]["Werner2009"],
+    "electrical": td.LossyMetalMedium(
+        conductivity=1.6,
+        frequency_range=[0.1e9, 200e9],
+        fit_param=td.SurfaceImpedanceFitterParam(max_num_poles=16),
+    ),
+}
+_open = td.Medium(permittivity=1.0)
+
 
 @pf.parametric_technology
 def ebeam(
@@ -20,35 +50,12 @@ def ebeam(
     bottom_oxide_thickness: pft.PositiveDimension = 4.5,
     top_oxide_thickness: pft.PositiveDimension = 3.0,
     passivation_oxide_thickness: pft.PositiveDimension = 0.3,
-    sio2: dict[str, pft.Medium] = {
-        "optical": td.material_library["SiO2"]["Palik_Lossless"],
-        "electrical": td.Medium(permittivity=4.2, name="SiO2"),
-    },
-    si: dict[str, pft.Medium] = {
-        "optical": td.material_library["cSi"]["Li1993_293K"],
-        "electrical": td.Medium(permittivity=12.3, name="Si"),
-    },
-    sin: dict[str, pft.Medium] = {
-        "optical": td.material_library["Si3N4"]["Luke2015PMLStable"],
-        "electrical": td.Medium(permittivity=7.5, name="Si3N4"),
-    },
-    router_metal: dict[str, pft.Medium] = {
-        "optical": td.material_library["Au"]["Olmon2012evaporated"],
-        "electrical": td.LossyMetalMedium(
-            conductivity=17,
-            frequency_range=[0.1e9, 200e9],
-            fit_param=td.SurfaceImpedanceFitterParam(max_num_poles=16),
-        ),
-    },
-    heater_metal: dict[str, pft.Medium] = {
-        "optical": td.material_library["W"]["Werner2009"],
-        "electrical": td.LossyMetalMedium(
-            conductivity=1.6,
-            frequency_range=[0.1e9, 200e9],
-            fit_param=td.SurfaceImpedanceFitterParam(max_num_poles=16),
-        ),
-    },
-    opening: pft.Medium = td.Medium(permittivity=1.0),
+    sio2: dict[str, pft.Medium] = _sio2,
+    si: dict[str, pft.Medium] = _si,
+    sin: dict[str, pft.Medium] = _sin,
+    router_metal: dict[str, pft.Medium] = _router,
+    heater_metal: dict[str, pft.Medium] = _heater,
+    opening: pft.Medium = _open,
 ) -> pf.Technology:
     """Create a technology for the e-beam SiN PDK.
 
@@ -210,6 +217,6 @@ def ebeam(
         ),
     }
 
-    result = pf.Technology("SiEPIC EBeam SiN", "1.2.0", layers, extrusion_specs, ports, opening)
+    result = pf.Technology("SiEPIC EBeam SiN", "1.2.1", layers, extrusion_specs, ports, opening)
     result.random_variables = []
     return result

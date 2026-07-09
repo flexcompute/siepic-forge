@@ -88,7 +88,7 @@ def parse(layers, node, description=""):
     name = node.find("name").text
     color = node.find("fill-color").text + "18"
 
-    key = prop.find("dither-pattern").text
+    key = node.find("dither-pattern").text
     key = layer if key is None else key[1:]
     pattern = patterns.get(key, "")
 

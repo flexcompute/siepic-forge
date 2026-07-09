@@ -1,11 +1,11 @@
 from .component import component, component_names  # noqa: F401
 from .technology import ebeam
 
-__version__ = "1.2.0"
+__version__ = "1.2.1"
 
 
 def plot_cross_section(technology=None):
-    import photonforge as pf
+    import photonforge as pf  # noqa: PLC0415
 
     if technology is None:
         technology = ebeam()

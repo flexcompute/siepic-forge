@@ -1,66 +1,70 @@
 import shutil
-from argparse import ArgumentParser
 
 import photonforge as pf
 from photonforge import pda
-from tidy3d.config import get_manager
 
 import siepic_sin_forge as siepic
 
 
-def create_library():
-    tech = siepic.ebeam()
-    pf.config.default_technology = tech
+def ignore_components(path, names):
+    return [n for n in names if n == "library" or "component" in n]
 
+
+def create_library():
     name = "SiEPIC EBeam SiN"
-    version = tech.version
+    description = "SiEPIC EBeam SiN PDK"
+    version = siepic.ebeam().version
 
     for lib in pda.list_libraries(name):
         if lib["version"] == version:
-            print("Library already exists: " + str(lib))
+            print(f"Library already exists: {lib!r}")
             return
 
-    components = [siepic.component(n) for n in siepic.component_names]
-
+    print(f"Creating library {name!r} - version {version!r}", flush=True)
     project = pda.create_project(
         name=name,
-        description="SiEPIC EBeam SiN PDK",
+        description=description,
         visibility="public",
         role="viewer",
         create_template=False,
     )
 
-    # Add sources
+    # Add sources: static components will be added directly, so we don't need the reference GDS
     shutil.copytree(
-        "./siepic_sin_forge", project.module_path / project.module_name, dirs_exist_ok=True
+        "./siepic_sin_forge",
+        project.module_path / project.module_name,
+        dirs_exist_ok=True,
+        ignore=ignore_components,
+    )
+
+    # Patch __init__ to remove components
+    init = project.module_path / project.module_name / "__init__.py"
+    init.write_text(
+        "\n".join(x for x in init.read_text().splitlines() if not x.startswith("from .component"))
+        + "\n"
     )
 
     project.save_module()
+    module = project.import_module(None)[project.module_name]
 
-    # Redirect parametric technology source
-    tech.parametric_function = (
-        project.module_name + "." + tech.parametric_function.partition(".")[2]
-    )
+    tech = module.ebeam()
+    pf.config.default_technology = tech
+
+    components = [siepic.component(n, tech) for n in siepic.component_names]
 
     # Add components
+    update_config = True
     for component in components:
         print("Adding", repr(component.name), flush=True)
-        project.add(component, update_existing_dependencies=False, update_config=False)
+        project.add(component, update_existing_dependencies=False, update_config=update_config)
+        update_config = False
 
     project.add_version(version)
 
-    print("Done:", project)
+    print(f"Done: {project!r}")
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser(prog=__file__)
-    parser.add_argument("--profile", default=None, help="tidy3d configuration profile")
-    args = parser.parse_args()
-
-    profile = args.profile
-    if args.profile is not None:
-        get_manager().switch_profile(args.profile)
-
     pda.init()
 
     try:

@@ -12,7 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         package_dir: [si, sin]
-    name: Build wheels on manylinux2014 (${{ matrix.package_dir }})
+    name: Build wheels for ${{ matrix.package_dir }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
