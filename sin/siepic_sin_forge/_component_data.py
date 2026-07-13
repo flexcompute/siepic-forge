@@ -17,9 +17,9 @@ _symmetries_mmi22 = _symmetries_directional_coupler
 
 _waist = 5.0
 
-_angle = 8 * math.pi / 180
-_vx8 = math.sin(_angle)
-_vy8 = -math.cos(_angle)
+_angle = 11 * math.pi / 180
+_vx = math.sin(_angle)
+_vy = -math.cos(_angle)
 
 _angle = 10 * math.pi / 180
 _te895_vx = math.sin(_angle)
@@ -40,7 +40,7 @@ _component_data = {
         "GC_SiN_TE_1310_8degOxide_BB",
         [
             ((0.0, 0.0), 180, "SiN_TE_1310_750"),
-            ((-29.7, 0.0), (_vx8, 0, _vy8), _waist, 90),
+            ((-29.7, 0.0), (_vx, 0, _vy), _waist, 90),
         ],
         None,
         "grating_coupler",
@@ -49,7 +49,7 @@ _component_data = {
         "GC_SiN_TE_1550_8degOxide_BB",
         [
             ((0.0, 0.0), 180, "SiN_TE_1550_750"),
-            ((-29.7, 0.0), (_vx8, 0, _vy8), _waist, 90),
+            ((-29.7, 0.0), (_vx, 0, _vy), _waist, 90),
         ],
         None,
         "grating_coupler",

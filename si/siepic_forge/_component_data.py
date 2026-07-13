@@ -10,15 +10,15 @@ _symmetries_crossing = [
 
 _waist = 5.0
 
-_angle = 8 * math.pi / 180
-_vx8 = math.sin(_angle)
-_vy8 = -math.cos(_angle)
+_angle = 11 * math.pi / 180
+_vx = math.sin(_angle)
+_vy = -math.cos(_angle)
 
-_angle = 7 * math.pi / 180
+_angle = 11 * math.pi / 180
 _tm1550_vx = math.sin(_angle)
 _tm1550_vy = -math.cos(_angle)
 
-_angle = -21 * math.pi / 180
+_angle = -31 * math.pi / 180
 _te1550_vx = math.sin(_angle)
 _te1550_vy = -math.cos(_angle)
 
@@ -27,7 +27,7 @@ _component_data = {
         "GCs_BB",
         [
             ((0.0, 0.0), 180, "TE_1310_350"),
-            ((-20.4, 0.0), (_vx8, 0, _vy8), _waist, 90),
+            ((-20.4, 0.0), (_vx, 0, _vy), _waist, 90),
         ],
         None,
         "grating-coupler",
@@ -36,7 +36,7 @@ _component_data = {
         "GCs_BB",
         [
             ((0.0, 0.0), 180, "TE_1550_500"),
-            ((-20.4, 0.0), (_vx8, 0, _vy8), _waist, 90),
+            ((-20.4, 0.0), (_vx, 0, _vy), _waist, 90),
         ],
         None,
         "grating-coupler",
@@ -45,7 +45,7 @@ _component_data = {
         "GCs_BB",
         [
             ((0.0, 0.0), 180, "TM_1310_350"),
-            ((-20.4, 0.0), (_vx8, 0, _vy8), _waist, 0),
+            ((-20.4, 0.0), (_vx, 0, _vy), _waist, 0),
         ],
         None,
         "grating-coupler",
@@ -54,7 +54,7 @@ _component_data = {
         "GCs_BB",
         [
             ((0.0, 0.0), 180, "TM_1550_500"),
-            ((-20.4, 0.0), (_vx8, 0, _vy8), _waist, 0),
+            ((-20.4, 0.0), (_vx, 0, _vy), _waist, 0),
         ],
         None,
         "grating_coupler",

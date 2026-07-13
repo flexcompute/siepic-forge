@@ -24,15 +24,15 @@ _symmetries_crossing = [
 
 _waist = 5.0
 
-_angle = 8 * math.pi / 180
-_vx8 = math.sin(_angle)
-_vy8 = -math.cos(_angle)
+_angle = 11 * math.pi / 180
+_vx = math.sin(_angle)
+_vy = -math.cos(_angle)
 
-_angle = 7 * math.pi / 180
+_angle = 11 * math.pi / 180
 _tm1550_vx = math.sin(_angle)
 _tm1550_vy = -math.cos(_angle)
 
-_angle = -21 * math.pi / 180
+_angle = -31 * math.pi / 180
 _te1550_vx = math.sin(_angle)
 _te1550_vy = -math.cos(_angle)
 
@@ -57,9 +57,9 @@ _symmetries_mmi22 = _symmetries_directional_coupler
 
 _waist = 5.0
 
-_angle = 8 * math.pi / 180
-_vx8 = math.sin(_angle)
-_vy8 = -math.cos(_angle)
+_angle = 11 * math.pi / 180
+_vx = math.sin(_angle)
+_vy = -math.cos(_angle)
 
 _angle = 10 * math.pi / 180
 _te895_vx = math.sin(_angle)
