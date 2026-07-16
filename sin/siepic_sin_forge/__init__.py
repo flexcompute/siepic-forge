@@ -1,7 +1,7 @@
 from .component import component, component_names  # noqa: F401
 from .technology import ebeam
 
-__version__ = "1.2.1"
+__version__ = "1.2.2"
 
 
 def plot_cross_section(technology=None):

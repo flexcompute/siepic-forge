@@ -217,6 +217,6 @@ def ebeam(
         ),
     }
 
-    result = pf.Technology("SiEPIC EBeam SiN", "1.2.1", layers, extrusion_specs, ports, opening)
+    result = pf.Technology("SiEPIC EBeam SiN", "1.2.2", layers, extrusion_specs, ports, opening)
     result.random_variables = []
     return result

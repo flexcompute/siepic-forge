@@ -252,7 +252,7 @@ def ebeam(
         ),
     }
 
-    result = pf.Technology("SiEPIC EBeam Si", "1.2.1", layers, extrusion_specs, ports, opening)
+    result = pf.Technology("SiEPIC EBeam Si", "1.2.2", layers, extrusion_specs, ports, opening)
     result.random_variables = [
         pf.monte_carlo.RandomVariable("si_thickness", value=0.22, stdev=0.0223 / 6),
     ]
