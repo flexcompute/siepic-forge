@@ -3,6 +3,43 @@ import subprocess
 import sys
 import xml.etree.ElementTree as et
 
+# Electrical roles and DRC minimums per layer name (SiEPIC_EBeam_DRC.lydrc, NanoSOI_layers.lyp).
+_CONDUCTIVE = {
+    "Direct Metal",
+    "M2_router",
+    "Via to silicon",
+}
+_DEVICE_MARKER = {
+    "DevRec",
+    "Dream Photonics Black Box-Not Fabricated",
+}
+_MIN_RULES = {
+    "Custom Dicing": (100, None),
+    "Deep Trench": (260, None),
+    "Direct Metal": (5, 10),
+    "M1_heater": (3, 3),
+    "M2_router": (5, 8),
+    "M_Open": (10, 10),
+    "SEM Imaging": (0.5, None),
+    "Si": (0.06, 0.07),
+    "SiN": (0.12, 0.12),
+}  # name: (min_width, min_spacing)
+
+
+def _extra_kwargs(name):
+    """Extra pf.LayerSpec keyword arguments for a layer name."""
+    extra = ""
+    if name in _CONDUCTIVE:
+        extra += ", conductive=True"
+    if name in _DEVICE_MARKER:
+        extra += ", device_marker=True"
+    width, spacing = _MIN_RULES.get(name, (None, None))
+    if width is not None:
+        extra += f", min_width={width}"
+    if spacing is not None:
+        extra += f", min_spacing={spacing}"
+    return extra
+
 
 # Klayout patterns
 patterns = {
@@ -157,7 +194,7 @@ if __name__ == "__main__":
             "import photonforge as pf",
             "_layers = {",
         ] + [
-            "\t{!r} : pf.LayerSpec({}, {!r}, {!r}, {!r}),".format(*v)
+            "\t{!r} : pf.LayerSpec({}, {!r}, {!r}, {!r}{}),".format(*v, _extra_kwargs(v[0]))
             for k, v in sorted(layers.items())
             if k not in skip_layers
         ]

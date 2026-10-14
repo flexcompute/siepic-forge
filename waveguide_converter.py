@@ -10,7 +10,7 @@ from siepic_sin_forge._layers import _layers as _layers_sin
 
 _layers = _layers_si | _layers_sin
 
-rename = {"Waveguide": "Si", "Si - 90 nm rib" : "Si Slab"}
+rename = {"Waveguide": "Si", "Si - 90 nm rib": "Si Slab"}
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
@@ -65,7 +65,6 @@ if __name__ == "__main__":
             path_profiles.append((width, offset, layer))
         if len(path_profiles):
             width = dev_rec_width if dev_rec_width > 0 else float(prop.find("width").text) + 2.0
-            target_neff = 2.1 if "SiN" in name else 3.5
             limit_layer = "sin" if "SiN" in name else "si"
             num_modes = (2 if "TE" in name else 1) if "TM" in name else 1
             added_solver_modes = (0 if "TE" in name else 1) if "TM" in name else 0
@@ -85,6 +84,5 @@ if __name__ == "__main__":
     num_modes={num_modes},
     added_solver_modes={added_solver_modes},
     polarization={polarization},
-    target_neff={target_neff},
     path_profiles={tuple(path_profiles)},
 ),""")

@@ -15,12 +15,13 @@ def create_library():
     description = "SiEPIC EBeam Si PDK"
     version = siepic.ebeam().version
 
+    print(f"Creating library {name!r} - version {version!r}", flush=True)
+
     for lib in pda.list_libraries(name):
         if lib["version"] == version:
             print(f"Library already exists: {lib!r}")
             return
 
-    print(f"Creating library {name!r} - version {version!r}", flush=True)
     project = pda.create_project(
         name=name,
         description=description,

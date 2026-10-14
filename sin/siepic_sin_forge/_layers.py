@@ -3,13 +3,35 @@ import photonforge as pf
 _layers = {
     "PinRec": pf.LayerSpec((1, 10), "SiEPIC", "#ff80a818", ""),
     "PinRecM": pf.LayerSpec((1, 11), "SiEPIC", "#80000018", ""),
-    "SiN": pf.LayerSpec((4, 0), "Silicon Nitride Full Etch", "#c080ff18", "."),
-    "Direct Metal": pf.LayerSpec((5, 0), "Dedicated Run Layers", "#80a8ff18", ""),
+    "SiN": pf.LayerSpec(
+        (4, 0), "Silicon Nitride Full Etch", "#c080ff18", ".", min_width=0.12, min_spacing=0.12
+    ),
+    "Direct Metal": pf.LayerSpec(
+        (5, 0),
+        "Dedicated Run Layers",
+        "#80a8ff18",
+        "",
+        conductive=True,
+        min_width=5,
+        min_spacing=10,
+    ),
     "Oxide open to BOX": pf.LayerSpec((6, 0), "Dedicated Run Layers", "#ff000018", ""),
     "Text": pf.LayerSpec((10, 0), "Text-Not Fabricated", "#00000018", "hollow"),
-    "M1_heater": pf.LayerSpec((11, 0), "TiW Heater", "#0000ff18", "\\\\"),
-    "M2_router": pf.LayerSpec((12, 0), "TiW/Au Routing Bilayer", "#ffbf0018", "//"),
-    "M_Open": pf.LayerSpec((13, 0), "Bond Pad Open", "#80005718", "\\\\"),
+    "M1_heater": pf.LayerSpec(
+        (11, 0), "TiW Heater", "#0000ff18", "\\\\", min_width=3, min_spacing=3
+    ),
+    "M2_router": pf.LayerSpec(
+        (12, 0),
+        "TiW/Au Routing Bilayer",
+        "#ffbf0018",
+        "//",
+        conductive=True,
+        min_width=5,
+        min_spacing=8,
+    ),
+    "M_Open": pf.LayerSpec(
+        (13, 0), "Bond Pad Open", "#80005718", "\\\\", min_width=10, min_spacing=10
+    ),
     "Si n": pf.LayerSpec((20, 0), "Dedicated Run Layers", "#afff8018", ""),
     "Si p": pf.LayerSpec((21, 0), "Dedicated Run Layers", "#ffd9df18", ""),
     "Si n+": pf.LayerSpec((22, 0), "Dedicated Run Layers", "#ff800018", ""),
@@ -18,14 +40,16 @@ _layers = {
     "Si p++": pf.LayerSpec((25, 0), "Dedicated Run Layers", "#00800018", ""),
     "ANT Reserved": pf.LayerSpec((31, 0), "SiEPIC/ANT Reserved", "#9580ff18", "/"),
     "ANT Reserved 1": pf.LayerSpec((33, 0), "ANT Reserved", "#9580ff18", "/"),
-    "Via to silicon": pf.LayerSpec((40, 0), "Dedicated Run Layers", "#0000ff18", ""),
-    "DevRec": pf.LayerSpec((68, 0), "SiEPIC", "#00800018", ""),
+    "Via to silicon": pf.LayerSpec(
+        (40, 0), "Dedicated Run Layers", "#0000ff18", "", conductive=True
+    ),
+    "DevRec": pf.LayerSpec((68, 0), "SiEPIC", "#00800018", "", device_marker=True),
     "FbrTgt": pf.LayerSpec((81, 0), "SiEPIC/Dedicated Run Layers", "#80808018", ""),
     "ANT Reserved 2": pf.LayerSpec((102, 0), "ANT Reserved", "#9580ff18", "/"),
     "ANT Reserved 3": pf.LayerSpec((110, 0), "ANT Reserved", "#9580ff18", "/"),
-    "Custom Dicing": pf.LayerSpec((189, 0), "", "#00000018", "hollow"),
-    "SEM Imaging": pf.LayerSpec((200, 0), "", "#ff000018", "x"),
-    "Deep Trench": pf.LayerSpec((201, 0), "", "#00ff0018", "."),
+    "Custom Dicing": pf.LayerSpec((189, 0), "", "#00000018", "hollow", min_width=100),
+    "SEM Imaging": pf.LayerSpec((200, 0), "", "#ff000018", "x", min_width=0.5),
+    "Deep Trench": pf.LayerSpec((201, 0), "", "#00ff0018", ".", min_width=260),
     "Deep Trench Handling Exclusion": pf.LayerSpec((202, 0), "", "#00760018", ":"),
     "Thermal Isolation Trenches": pf.LayerSpec((203, 0), "", "#00800018", "\\"),
     "Laser Integration Shelf": pf.LayerSpec((205, 0), "Dedicated Run Layers", "#69ff0518", ""),
@@ -111,6 +135,8 @@ _layers = {
     "Error: Thermal isolation and device layer overlap, or spacing is less than design rule": pf.LayerSpec(
         (403, 3), "DRC Errors", "#50008018", ""
     ),
-    "Dream Photonics Black Box-Not Fabricated": pf.LayerSpec((998, 0), "", "#00000018", "hollow"),
+    "Dream Photonics Black Box-Not Fabricated": pf.LayerSpec(
+        (998, 0), "", "#00000018", "hollow", device_marker=True
+    ),
     "Errors": pf.LayerSpec((999, 0), "SiEPIC", "#0000ff18", ""),
 }

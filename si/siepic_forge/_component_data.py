@@ -30,7 +30,7 @@ _component_data = {
             ((-20.4, 0.0), (_vx, 0, _vy), _waist, 90),
         ],
         None,
-        "grating-coupler",
+        "grating_coupler",
     ),
     "GC_TE_1550_8degOxide_BB": (
         "GCs_BB",
@@ -39,7 +39,7 @@ _component_data = {
             ((-20.4, 0.0), (_vx, 0, _vy), _waist, 90),
         ],
         None,
-        "grating-coupler",
+        "grating_coupler",
     ),
     "GC_TM_1310_8degOxide_BB": (
         "GCs_BB",
@@ -48,7 +48,7 @@ _component_data = {
             ((-20.4, 0.0), (_vx, 0, _vy), _waist, 0),
         ],
         None,
-        "grating-coupler",
+        "grating_coupler",
     ),
     "GC_TM_1550_8degOxide_BB": (
         "GCs_BB",

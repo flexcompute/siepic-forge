@@ -127,7 +127,6 @@ def ebeam(
             num_modes=1,
             added_solver_modes=0,
             polarization=None,
-            target_neff=3.5,
             path_profiles=((0.5, 0.0, (1, 0)),),
         ),
         "TE_1310_410": pf.PortSpec(
@@ -137,7 +136,6 @@ def ebeam(
             num_modes=1,
             added_solver_modes=0,
             polarization=None,
-            target_neff=3.5,
             path_profiles=((0.41, 0.0, (1, 0)),),
         ),
         "TE_1310_350": pf.PortSpec(
@@ -147,7 +145,6 @@ def ebeam(
             num_modes=1,
             added_solver_modes=0,
             polarization=None,
-            target_neff=3.5,
             path_profiles=((0.35, 0.0, (1, 0)),),
         ),
         "TM_1310_350": pf.PortSpec(
@@ -157,7 +154,6 @@ def ebeam(
             num_modes=1,
             added_solver_modes=1,
             polarization="TM",
-            target_neff=3.5,
             path_profiles=((0.35, 0.0, (1, 0)),),
         ),
         "TM_1550_500": pf.PortSpec(
@@ -167,7 +163,6 @@ def ebeam(
             num_modes=1,
             added_solver_modes=1,
             polarization="TM",
-            target_neff=3.5,
             path_profiles=((0.5, 0.0, (1, 0)),),
         ),
         "TE-TM_1550_450": pf.PortSpec(
@@ -177,7 +172,6 @@ def ebeam(
             num_modes=2,
             added_solver_modes=0,
             polarization=None,
-            target_neff=3.5,
             path_profiles=((0.45, 0.0, (1, 0)),),
         ),
         "MM_TE_1550_2000": pf.PortSpec(
@@ -187,7 +181,6 @@ def ebeam(
             num_modes=10,
             added_solver_modes=0,
             polarization=None,
-            target_neff=3.5,
             path_profiles=((2.0, 0.0, (1, 0)),),
         ),
         "MM_TE_1550_3000": pf.PortSpec(
@@ -197,7 +190,6 @@ def ebeam(
             num_modes=15,
             added_solver_modes=0,
             polarization=None,
-            target_neff=3.5,
             path_profiles=((3.0, 0.0, (1, 0)),),
         ),
         "Slot_TE_1550_500": pf.PortSpec(
@@ -207,7 +199,6 @@ def ebeam(
             num_modes=1,
             added_solver_modes=0,
             polarization=None,
-            target_neff=3.5,
             path_profiles=((0.2, -0.15, (1, 0)), (0.2, 0.15, (1, 0))),
         ),
         "eskid_TE_1550": pf.PortSpec(
@@ -217,7 +208,6 @@ def ebeam(
             num_modes=1,
             added_solver_modes=0,
             polarization=None,
-            target_neff=3.5,
             path_profiles=(
                 (0.35, 0.0, (1, 0)),
                 (0.06, 0.265, (1, 0)),
@@ -237,7 +227,6 @@ def ebeam(
             num_modes=1,
             added_solver_modes=0,
             polarization=None,
-            target_neff=3.5,
             path_profiles=((0.5, 0.0, (1, 0)), (3.0, 0.0, (2, 0))),
         ),
         "Rib_TE_1310_350": pf.PortSpec(
@@ -247,7 +236,6 @@ def ebeam(
             num_modes=1,
             added_solver_modes=0,
             polarization=None,
-            target_neff=3.5,
             path_profiles=((0.35, 0.0, (1, 0)), (3.0, 0.0, (2, 0))),
         ),
     }

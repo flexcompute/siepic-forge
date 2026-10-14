@@ -15,5 +15,3 @@ def test_export(tmp_path):
     assert tech_loaded.extrusion_specs == tech.extrusion_specs
     assert tech_loaded.background_medium == tech.background_medium
     assert tech_loaded == tech
-
-
