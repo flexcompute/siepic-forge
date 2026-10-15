@@ -242,7 +242,7 @@ def ebeam(
 
     result = pf.Technology(
         "SiEPIC EBeam Si",
-        "1.2.2",
+        "1.3.0",
         layers,
         extrusion_specs,
         ports,
